@@ -35,7 +35,7 @@
     "@repo/nest-common": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "fastify": "^4.28.1",
+    "fastify": "^5.0.0",
     "ms": "^2.1.3",
     "pino": "^9.5.0",
     "rxjs": "^7.8.1"
