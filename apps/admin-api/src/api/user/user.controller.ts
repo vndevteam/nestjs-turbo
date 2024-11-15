@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser, Public } from '@repo/api';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserReqDto } from './dto/create-user.dto';
+import { UpdateUserReqDto } from './dto/update-user.dto';
 import { UserResDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -29,7 +29,7 @@ export class UserController {
   @Post('users')
   @Public()
   @SerializeOptions({ type: UserResDto })
-  async create(@Body('user') userData: CreateUserDto): Promise<UserResDto> {
+  async create(@Body('user') userData: CreateUserReqDto): Promise<UserResDto> {
     return this.userService.create(userData);
   }
 
@@ -37,7 +37,7 @@ export class UserController {
   @SerializeOptions({ type: UserResDto })
   async update(
     @CurrentUser('id') userId: number,
-    @Body('user') userData: UpdateUserDto,
+    @Body('user') userData: UpdateUserReqDto,
   ): Promise<UserResDto> {
     return this.userService.update(userId, userData);
   }

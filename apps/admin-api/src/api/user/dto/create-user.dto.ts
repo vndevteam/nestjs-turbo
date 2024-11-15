@@ -6,7 +6,7 @@ import {
 } from '@repo/api';
 import { Transform } from 'class-transformer';
 
-export class CreateUserDto {
+export class CreateUserReqDto {
   @StringField()
   @Transform(lowerCaseTransformer)
   readonly username: string;

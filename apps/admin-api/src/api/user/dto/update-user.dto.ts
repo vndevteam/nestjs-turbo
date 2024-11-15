@@ -2,7 +2,7 @@ import { EmailField, lowerCaseTransformer, StringField } from '@repo/api';
 import { Transform } from 'class-transformer';
 import { IsUrl } from 'class-validator';
 
-export class UpdateUserDto {
+export class UpdateUserReqDto {
   @StringField()
   @Transform(lowerCaseTransformer)
   readonly username: string;
