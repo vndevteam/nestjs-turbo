@@ -78,4 +78,7 @@ export class ArticleEntity extends AbstractEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.article)
   comments: Relation<CommentEntity[]>;
+
+  @ManyToMany(() => UserEntity, (user) => user.favorites)
+  favoritedBy: Relation<UserEntity[]>;
 }

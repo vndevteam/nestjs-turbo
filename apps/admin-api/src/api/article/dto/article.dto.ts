@@ -3,7 +3,7 @@ import { Expose, Type } from 'class-transformer';
 
 export class ArticleDto {
   @Expose()
-  slug: string;
+  slug?: string;
 
   @Expose()
   title: string;
@@ -12,26 +12,26 @@ export class ArticleDto {
   description: string;
 
   @Expose()
-  body?: string;
+  body: string;
 
   @Expose()
   tagList: string[];
 
   @Expose()
-  createdAt: Date;
+  createdAt?: Date;
 
   @Expose()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @Expose()
-  favorited: boolean;
+  favorited?: boolean;
 
   @Expose()
-  favoritesCount: number;
+  favoritesCount?: number;
 
   @Expose()
   @Type(() => ProfileDto)
-  author: ProfileDto;
+  author?: ProfileDto;
 }
 
 export class ArticleResDto {

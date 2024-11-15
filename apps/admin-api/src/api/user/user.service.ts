@@ -5,8 +5,8 @@ import { ValidationException } from '@repo/api';
 import { UserEntity } from '@repo/database-typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserReqDto } from './dto/create-user.dto';
+import { UpdateUserReqDto } from './dto/update-user.dto';
 import { UserResDto } from './dto/user.dto';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class UserService {
     return { user: { ...user, token: currentUser.token } };
   }
 
-  async create(dto: CreateUserDto): Promise<UserResDto> {
+  async create(dto: CreateUserReqDto): Promise<UserResDto> {
     const { username, email, password } = dto;
 
     const user = await this.userRepository.findOne({
@@ -47,7 +47,10 @@ export class UserService {
     };
   }
 
-  async update(userId: number, userData: UpdateUserDto): Promise<UserResDto> {
+  async update(
+    userId: number,
+    userData: UpdateUserReqDto,
+  ): Promise<UserResDto> {
     const user = await this.userRepository.findOneBy({ id: userId });
 
     if (!user) {

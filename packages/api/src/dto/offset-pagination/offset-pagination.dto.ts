@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { DEFAULT_PAGE_LIMIT, Order } from '../../constants';
 import { PageOptionsDto } from './page-options.dto';
 
 export class OffsetPaginationDto {
@@ -9,7 +10,7 @@ export class OffsetPaginationDto {
 
   @ApiProperty()
   @Expose()
-  readonly currentPage: number;
+  readonly offset: number;
 
   @ApiProperty()
   @Expose()
@@ -27,14 +28,21 @@ export class OffsetPaginationDto {
   @Expose()
   readonly totalPages: number;
 
-  constructor(totalRecords: number, pageOptions: PageOptionsDto) {
+  constructor(
+    totalRecords: number,
+    pageOptions: PageOptionsDto = {
+      limit: DEFAULT_PAGE_LIMIT,
+      offset: 0,
+      order: Order.ASC,
+    },
+  ) {
     this.limit = pageOptions.limit;
-    this.currentPage = pageOptions.offset / pageOptions.limit + 1;
-    this.nextPage =
-      this.currentPage < this.totalPages ? this.currentPage + 1 : undefined;
+    this.offset = pageOptions.offset;
+    const currentPage = pageOptions.offset / pageOptions.limit + 1;
+    this.nextPage = currentPage < this.totalPages ? currentPage + 1 : undefined;
     this.previousPage =
-      this.currentPage > 1 && this.currentPage - 1 < this.totalPages
-        ? this.currentPage - 1
+      currentPage > 1 && currentPage - 1 < this.totalPages
+        ? currentPage - 1
         : undefined;
     this.totalRecords = totalRecords;
     this.totalPages =
