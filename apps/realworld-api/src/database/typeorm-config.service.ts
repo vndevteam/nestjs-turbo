@@ -2,7 +2,7 @@ import { AllConfigType } from '@/config/config.type';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { TypeOrmCustomLogger } from '@repo/database-typeorm';
+import { TypeOrmCustomLogger } from '@repo/mysql-typeorm';
 import { join } from 'path';
 
 @Injectable()

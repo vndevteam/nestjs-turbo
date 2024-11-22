@@ -16,7 +16,6 @@
       "@/guards/*": ["src/guards/*"],
       "@/interceptors/*": ["src/interceptors/*"],
       "@/utils/*": ["src/utils/*"]
-      // "@repo/database-typeorm": ["node_modules/@repo/mysql-typeorm"], // Uncomment this line if you are using MySQL
     }
   }
 }

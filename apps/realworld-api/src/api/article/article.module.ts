@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleEntity, TagEntity, UserEntity } from '@repo/database-typeorm';
+import { ArticleEntity, TagEntity, UserEntity } from '@repo/mysql-typeorm';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { CommentModule } from './comment/comment.module';

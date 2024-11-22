@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { appConfig, Environment } from '@repo/api';
-import { databaseConfig } from '@repo/database-typeorm';
+import { databaseConfig } from '@repo/mysql-typeorm';
 import {
   AsyncContextProvider,
   FastifyPinoLogger,
@@ -21,8 +21,7 @@ import authConfig from './api/auth/config/auth.config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AllConfigType } from './config/config.type';
-// import { TypeOrmConfigService } from './database/mysql-typeorm-config.service'; // Uncomment this line if you are using MySQL
-import { TypeOrmConfigService } from './database/typeorm-config.service';
+import { TypeOrmConfigService } from './database/mysql-typeorm-config.service';
 
 const configModule = ConfigModule.forRoot({
   isGlobal: true,

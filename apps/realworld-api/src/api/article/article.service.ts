@@ -2,7 +2,7 @@ import { ErrorCode } from '@/constants/error-code.constant';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from '@repo/api/utils/offset-pagination';
-import { ArticleEntity, TagEntity, UserEntity } from '@repo/database-typeorm';
+import { ArticleEntity, TagEntity, UserEntity } from '@repo/mysql-typeorm';
 import { I18nService } from 'nestjs-i18n';
 import slugify from 'slugify';
 import { In, Repository } from 'typeorm';
