@@ -1,73 +1,145 @@
+# RealWorld API
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Introduction
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Backend API for the RealWorld application, built with NestJS. This is part of the NestJS Turborepo monorepo.
 
-## Description
+## Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- User authentication (registration, login)
+- Article management (create, read, update, delete)
+- Comment management
+- User following
+- Article favoriting
+
+## Project Structure
+
+```
+src/
+├── auth/           # Authentication module
+├── articles/       # Articles module
+├── comments/       # Comments module
+├── profiles/       # User profiles module
+├── tags/           # Tags module
+├── users/          # Users module
+├── common/         # Common components
+└── config/         # Application configuration
+```
+
+## System Requirements
+
+- Node.js >= 18.x
+- PostgreSQL >= 14.x
+- pnpm >= 8.x
 
 ## Installation
 
 ```bash
-$ pnpm install
+# Install dependencies
+pnpm install
+
+# Create environment file
+cp .env.example .env
+
+# Edit environment variables in .env
 ```
 
-## Running the app
+## Configuration
+
+Important environment variables:
+
+```env
+# Application port
+PORT=3000
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/realworld
+
+# JWT
+JWT_SECRET=your-secret-key
+JWT_EXPIRES_IN=7d
+
+# Swagger
+SWAGGER_TITLE=RealWorld API
+SWAGGER_DESCRIPTION=API documentation for RealWorld application
+SWAGGER_VERSION=1.0
+```
+
+## Development
 
 ```bash
-# development
-$ pnpm run start
+# Run in development mode
+pnpm run start:dev
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+# Run with hot-reload
+pnpm run start:debug
 ```
 
-## Test
+## Build
 
 ```bash
-# unit tests
-$ pnpm run test
+# Build application
+pnpm run build
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# Run in production mode
+pnpm run start:prod
 ```
+
+## Testing
+
+```bash
+# Run unit tests
+pnpm run test
+
+# Run e2e tests
+pnpm run test:e2e
+
+# Check test coverage
+pnpm run test:cov
+```
+
+## API Documentation
+
+Access Swagger UI at: `http://localhost:3000/api-docs`
+
+## Deployment
+
+### With Docker
+
+```bash
+# Build image
+docker build -t realworld-api .
+
+# Run container
+docker run -p 3000:3000 realworld-api
+```
+
+### With PM2
+
+```bash
+# Install PM2
+npm install -g pm2
+
+# Run application
+pm2 start dist/main.js --name realworld-api
+```
+
+## Development Process
+
+1. Create a new branch from `main`
+2. Make changes
+3. Write tests
+4. Create pull request
+5. Wait for review and merge
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+If you encounter any issues or have questions, please create an issue on GitHub.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
