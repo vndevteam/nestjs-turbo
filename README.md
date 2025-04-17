@@ -23,7 +23,6 @@ This is a monorepo built with [Turborepo](https://turbo.build/repo) and [NestJS]
 
 - `apps/realworld-api`: API backend for RealWorld application
 - `apps/realworldx-api`: Extended API backend for RealWorld application
-- `apps/user-api`: User management API
 - `apps/web`: Web frontend application
 - `apps/docs`: Project documentation
 
@@ -54,7 +53,6 @@ pnpm install
 
 # Create environment files
 cp apps/realworld-api/.env.example apps/realworld-api/.env
-cp apps/user-api/.env.example apps/user-api/.env
 cp apps/realworldx-api/.env.example apps/realworldx-api/.env
 ```
 
@@ -95,7 +93,7 @@ Each application can be deployed independently. See the README of each applicati
 
 ## Development Process
 
-1. Create a new branch from `main`
+1. Create a new branch from `develop`
 2. Make changes
 3. Create pull request
 4. Wait for review and merge
