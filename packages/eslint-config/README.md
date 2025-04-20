@@ -23,7 +23,7 @@ pnpm add -D @repo/eslint-config
 ```js
 // .eslintrc.js
 module.exports = {
-  extends: ['@repo/eslint-config/eslint-nest'],
+  extends: ["@repo/eslint-config/eslint-nest"],
 };
 ```
 
@@ -32,7 +32,7 @@ module.exports = {
 ```js
 // .eslintrc.js
 module.exports = {
-  extends: ['@repo/eslint-config/eslint-next'],
+  extends: ["@repo/eslint-config/eslint-next"],
 };
 ```
 
@@ -41,7 +41,7 @@ module.exports = {
 ```js
 // .eslintrc.js
 module.exports = {
-  extends: ['@repo/eslint-config/eslint-react-internal'],
+  extends: ["@repo/eslint-config/eslint-react-internal"],
 };
 ```
 
@@ -51,7 +51,7 @@ This package also provides a default Prettier configuration:
 
 ```js
 // .prettierrc.js
-module.exports = require('@repo/eslint-config/prettier-base');
+module.exports = require("@repo/eslint-config/prettier-base");
 ```
 
 ## Rules
