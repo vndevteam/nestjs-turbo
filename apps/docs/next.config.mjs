@@ -8,6 +8,10 @@ const withNextra = nextra({
 
 const nextConfig = {
   reactStrictMode: true,
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

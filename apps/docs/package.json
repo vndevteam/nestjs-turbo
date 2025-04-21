@@ -6,7 +6,7 @@
     "dev": "next dev --port 3333 --turbopack",
     "build": "next build",
     "start": "next start",
-    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
+    "postbuild": "pagefind --site .next/server/app --output-path out/_pagefind",
     "lint": "eslint \"*.{ts,tsx,js,jsx}\" --fix"
   },
   "dependencies": {
