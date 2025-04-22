@@ -111,10 +111,11 @@ export class ArticleController {
     },
   })
   async update(
+    @CurrentUser('id') userId: number,
     @Param('slug') slug: string,
     @Body('article') articleData: UpdateArticleReqDto,
   ) {
-    return await this.articleService.update(slug, articleData);
+    return await this.articleService.update(userId, slug, articleData);
   }
 
   @Delete(':slug')

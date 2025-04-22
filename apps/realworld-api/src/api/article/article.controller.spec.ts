@@ -448,10 +448,10 @@ describe('ArticleController', () => {
 
       articleService.update.mockResolvedValue(mockArticle);
 
-      const result = await controller.update(slug, articleData);
+      const result = await controller.update(1, slug, articleData);
 
       expect(result).toEqual(mockArticle);
-      expect(articleService.update).toHaveBeenCalledWith(slug, articleData);
+      expect(articleService.update).toHaveBeenCalledWith(1, slug, articleData);
     });
 
     it('should throw an error if update fails', async () => {
@@ -465,10 +465,10 @@ describe('ArticleController', () => {
 
       articleService.update.mockRejectedValue(new Error('Update failed'));
 
-      await expect(controller.update(slug, articleData)).rejects.toThrow(
+      await expect(controller.update(1, slug, articleData)).rejects.toThrow(
         'Update failed',
       );
-      expect(articleService.update).toHaveBeenCalledWith(slug, articleData);
+      expect(articleService.update).toHaveBeenCalledWith(1, slug, articleData);
     });
 
     describe('UpdateArticleReqDto', () => {

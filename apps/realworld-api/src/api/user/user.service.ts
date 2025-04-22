@@ -64,6 +64,7 @@ export class UserService {
 
     return {
       user: {
+        ...user,
         ...savedUser,
         token: await this.authService.createToken({ id: savedUser.id }),
       },

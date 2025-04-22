@@ -73,33 +73,46 @@ SWAGGER_VERSION=1.0
 
 ```bash
 # Run in development mode
-pnpm run start:dev
+pnpm --filter=realworld-api start:dev
 
 # Run with hot-reload
-pnpm run start:debug
+pnpm --filter=realworld-api start:debug
+
+# Database Migrations
+# Run pending migrations
+pnpm --filter=@repo/database-typeorm migration:up
+
+# Revert last migration
+pnpm --filter=@repo/database-typeorm migration:down
+
+# Generate new migration
+pnpm --filter=@repo/database-typeorm migration:generate src/migrations/<migration-name>
+
+# Show migration status
+pnpm --filter=@repo/database-typeorm migration:show
 ```
 
 ## Build
 
 ```bash
 # Build application
-pnpm run build
+pnpm --filter=realworld-api build
 
 # Run in production mode
-pnpm run start:prod
+pnpm --filter=realworld-api start:prod
 ```
 
 ## Testing
 
 ```bash
 # Run unit tests
-pnpm run test
+pnpm --filter=realworld-api test
 
 # Run e2e tests
-pnpm run test:e2e
+pnpm --filter=realworld-api test:e2e
 
 # Check test coverage
-pnpm run test:cov
+pnpm --filter=realworld-api test:cov
 ```
 
 ## API Documentation

@@ -1,12 +1,12 @@
 services:
   db:
-    container_name: nestjs-turbo-postgres
+    container_name: realworld-postgres
     image: postgres:17
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: nestjs_turbo
+      POSTGRES_DB: realworld
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       TZ: "UTC"
