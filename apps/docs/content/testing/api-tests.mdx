@@ -1,0 +1,68 @@
+# API Testing Guide
+
+This guide explains how to run the API tests for the RealWorld application.
+
+## Overview
+
+The API tests are implemented using Postman collections and can be run locally against your backend. These tests ensure that your API implementation meets the RealWorld API specification.
+
+## Prerequisites
+
+- [pnpm](https://pnpm.io/) installed
+- [newman](https://github.com/postmanlabs/newman) (will be installed automatically via pnpm)
+- Your backend server running locally
+
+## Running the Tests
+
+### Basic Usage
+
+To run the tests against your local backend, execute:
+
+```bash
+APIURL=http://localhost:8001/api ./tools/test/run-api-tests.sh
+```
+
+### Configuration Options
+
+The test script supports several environment variables for customization:
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| APIURL | The base URL of your API | http://localhost:8001/api |
+| USERNAME | Username for test user | u[timestamp] |
+| EMAIL | Email for test user | [username]@mail.com |
+| PASSWORD | Password for test user | password |
+
+### Examples
+
+1. Run with custom user credentials:
+```bash
+APIURL=http://localhost:8001/api \
+USERNAME=testuser \
+EMAIL=test@example.com \
+PASSWORD=testpass \
+./tools/test/run-api-tests.sh
+```
+
+2. Run against a different environment:
+```bash
+APIURL=https://api.example.com/api ./tools/test/run-api-tests.sh
+```
+
+## Test Collection
+
+The tests are defined in the Postman collection file: `tools/test/realworld.postman_collection.json`. This collection includes tests for all endpoints specified in the RealWorld API specification.
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Ensure your backend server is running and accessible
+2. Check that the APIURL is correct and points to your API
+3. Verify that your API implements all endpoints required by the RealWorld specification
+4. Check the test output for specific error messages
+
+## Additional Resources
+
+- [RealWorld API Specification](https://github.com/gothinkster/realworld/tree/master/api)
+- [Newman Documentation](https://github.com/postmanlabs/newman)
