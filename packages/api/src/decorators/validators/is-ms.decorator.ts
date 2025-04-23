@@ -14,7 +14,7 @@ export function IsMs(validationOptions?: ValidationOptions): PropertyDecorator {
           return (
             typeof value === 'string' &&
             value.length != 0 &&
-            ms(value) !== undefined
+            ms(value as ms.StringValue) !== undefined
           );
         },
         defaultMessage() {
