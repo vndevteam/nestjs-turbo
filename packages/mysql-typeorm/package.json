@@ -42,21 +42,21 @@
     }
   },
   "dependencies": {
-    "@nestjs/config": "^3.3.0",
-    "@nestjs/mapped-types": "*",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/mapped-types": "^2.1.0",
     "@repo/nest-common": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "env-cmd": "^10.1.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.22"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.14.1",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "typeorm-extension": "^3.6.3",
+    "typeorm-extension": "^3.7.1",
     "typescript": "^5.8.3"
   }
 }
