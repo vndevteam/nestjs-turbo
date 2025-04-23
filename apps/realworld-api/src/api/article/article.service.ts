@@ -44,7 +44,17 @@ export class ArticleService {
     qb.where('1 = 1');
 
     if (reqDto.tag) {
-      qb.andWhere('tags.name LIKE :tag', { tag: `%${reqDto.tag}%` });
+      qb.andWhere((qb) => {
+        const subQuery = qb
+          .subQuery()
+          .select('article_sub.id')
+          .from('article', 'article_sub')
+          .leftJoin('article_sub.tags', 'tag_sub')
+          .where('tag_sub.name LIKE :tag', { tag: `%${reqDto.tag}%` })
+          .getQuery();
+
+        return 'article.id IN ' + subQuery;
+      });
     }
 
     if (reqDto.author) {
@@ -185,13 +195,30 @@ export class ArticleService {
       savedArticle = await manager.save(newArticle);
     });
 
+    const article = await this.articleRepository.findOne({
+      where: { id: savedArticle.id },
+      relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+    });
+
     return {
       article: {
-        slug: savedArticle.slug,
-        title: savedArticle.title,
-        description: savedArticle.description,
-        body: savedArticle.body,
-        tagList: savedArticle.tags.map((tag) => tag.name),
+        slug: article.slug,
+        title: article.title,
+        description: article.description,
+        body: article.body,
+        tagList: article.tags.map((tag) => tag.name),
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+        author: {
+          username: article.author.username,
+          bio: article.author.bio,
+          image: article.author.image,
+          following: article.author.following.some(
+            (follow) => follow.followeeId === userId,
+          ),
+        },
+        favorited: article.favoritedBy.some((user) => user.id === userId),
+        favoritesCount: article.favoritedBy.length,
       },
     };
   }
@@ -201,6 +228,7 @@ export class ArticleService {
   }
 
   async update(
+    userId: number,
     reqSlug: string,
     articleData: UpdateArticleReqDto,
   ): Promise<ArticleResDto> {
@@ -212,9 +240,9 @@ export class ArticleService {
       throw new NotFoundException(this.i18n.t(ErrorCode.E201));
     }
 
-    const { title, description, body, tagList } = articleData;
+    const { title, description, body, tagList = [] } = articleData;
     const newSlug =
-      reqSlug !== this.generateSlug(title)
+      title && reqSlug !== this.generateSlug(title)
         ? await this.validateAndCreateSlug(title)
         : reqSlug;
     const { existingTags, newTags } = await this.prepareTags(tagList);
@@ -237,13 +265,30 @@ export class ArticleService {
       savedArticle = await manager.save(updatedArticle);
     });
 
+    const newArticle = await this.articleRepository.findOne({
+      where: { id: savedArticle.id },
+      relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+    });
+
     return {
       article: {
-        slug: savedArticle.slug,
-        title: savedArticle.title,
-        description: savedArticle.description,
-        body: savedArticle.body,
-        tagList: savedArticle.tags.map((tag) => tag.name),
+        slug: newArticle.slug,
+        title: newArticle.title,
+        description: newArticle.description,
+        body: newArticle.body,
+        tagList: newArticle.tags.map((tag) => tag.name),
+        createdAt: newArticle.createdAt,
+        updatedAt: newArticle.updatedAt,
+        author: {
+          username: newArticle.author.username,
+          bio: newArticle.author.bio,
+          image: newArticle.author.image,
+          following: newArticle.author.following.some(
+            (follow) => follow.followeeId === userId,
+          ),
+        },
+        favorited: newArticle.favoritedBy.some((user) => user.id === userId),
+        favoritesCount: newArticle.favoritedBy.length,
       },
     };
   }
@@ -269,7 +314,11 @@ export class ArticleService {
     });
   }
 
-  private async prepareTags(tagList: string[]) {
+  private async prepareTags(tagList: string[] = []) {
+    if (!tagList || tagList.length === 0) {
+      return { existingTags: [], newTags: [] };
+    }
+
     const existingTags = await this.tagRepository.find({
       where: { name: In(tagList) },
     });

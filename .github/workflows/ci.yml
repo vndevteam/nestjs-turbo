@@ -2,9 +2,13 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: ['main']
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: ['main']
+    branches:
+      - main
+      - develop
     types: [opened, synchronize]
 
 permissions:
@@ -24,7 +28,7 @@ jobs:
         working-directory: ./
     strategy:
       matrix:
-        node-version: [20.16.0]
+        node-version: [22.15.0]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

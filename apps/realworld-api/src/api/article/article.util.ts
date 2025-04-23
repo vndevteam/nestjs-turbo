@@ -15,7 +15,7 @@ export function toArticleDto(
 
   const articleDto = article?.toDto(ArticleDto) || new ArticleDto();
   articleDto.author = author;
-  articleDto.tagList = article?.tags?.map((tag) => tag.name) || [];
+  articleDto.tagList = article?.tags?.map((tag) => tag.name).reverse() || [];
   articleDto.favorited =
     article?.favoritedBy?.some((fUser) => fUser.id === user.id) || false;
   articleDto.favoritesCount = article?.favoritedBy?.length || 0;
