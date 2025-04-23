@@ -1457,7 +1457,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": ""
+              "raw": "{}"
             },
             "url": {
               "raw": "{{APIURL}}/articles/{{slug}}/favorite",
@@ -1946,7 +1946,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": ""
+              "raw": "{}"
             },
             "url": {
               "raw": "{{APIURL}}/profiles/celeb_{{USERNAME}}/follow",
