@@ -8,6 +8,35 @@
 
 Backend API for the RealWorld application, built with NestJS. This is part of the NestJS Turborepo monorepo.
 
+## Tech Stack
+
+### Backend
+
+- **Framework**: [NestJS](https://nestjs.com/) - A progressive Node.js framework with Fastify HTTP engine
+- **Language**: [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
+- **Database**: [PostgreSQL](https://www.postgresql.org/), [MySQL](https://www.mysql.com/) - Relational databases
+- **ORM**: [TypeORM](https://typeorm.io/) - Object-Relational Mapping
+- **Authentication**: [JWT](https://jwt.io/) - JSON Web Tokens
+- **API Documentation**: [Swagger/OpenAPI](https://swagger.io/) - API documentation
+- **Testing**:
+  - [Jest](https://jestjs.io/) - Testing framework
+  - [Supertest](https://github.com/visionmedia/supertest) - HTTP testing
+
+### Development Tools
+
+- **Package Manager**: [pnpm](https://pnpm.io/) - Fast, disk space efficient package manager
+- **Build Tool**: [Turborepo](https://turbo.build/) - High-performance build system
+- **Code Quality**:
+  - [ESLint](https://eslint.org/) - Code linting
+  - [Prettier](https://prettier.io/) - Code formatting
+- **Version Control**: [Git](https://git-scm.com/) - Distributed version control
+- **CI/CD**: [GitHub Actions](https://github.com/features/actions) - Continuous Integration/Deployment
+- **Containerization**: [Docker](https://www.docker.com/) - Container platform
+
+### Monitoring & Performance
+
+- **Logging**: [Pino](https://github.com/iamolegga/nestjs-pino) - Fast Node.js logger
+
 ## Features
 
 - User authentication (registration, login)
@@ -117,7 +146,7 @@ pnpm --filter=realworld-api test:cov
 
 ## API Documentation
 
-Access Swagger UI at: `http://localhost:3000/api-docs`
+Access Swagger UI at: `http://localhost:8001/api-docs`
 
 ## Deployment
 
@@ -143,7 +172,7 @@ pm2 start dist/main.js --name realworld-api
 
 ## Development Process
 
-1. Create a new branch from `main`
+1. Create a new branch from `develop`
 2. Make changes
 3. Write tests
 4. Create pull request
