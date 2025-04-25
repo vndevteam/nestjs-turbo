@@ -1,0 +1,37 @@
+{
+  "common": {
+    "internal_server_error": "Đã xảy ra lỗi hệ thống",
+    "entity_not_found": "Không tìm thấy đối tượng",
+    "validation": {
+      "error": "Lỗi xác thực dữ liệu",
+      "is_empty": "Không được để trống",
+      "is_string": "Phải là chuỗi"
+    },
+    "error": {
+      "unique_username": "Tên người dùng đã tồn tại",
+      "unique_email": "Email đã tồn tại",
+      "unique_follow": "Đã theo dõi người dùng này",
+      "unique_tag": "Thẻ đã tồn tại",
+      "unique_favorite": "Đã thích bài viết này",
+      "unique_slug": "Slug bài viết đã tồn tại"
+    }
+  },
+  "user": {
+    "username_or_email_exists": "Tên người dùng hoặc email đã tồn tại",
+    "not_found": "Người dùng không tìm thấy",
+    "exist": "Người dùng đã tồn tại"
+  },
+  "profile": {
+    "not_found": "Hồ sơ không tìm thấy",
+    "following_self": "Bạn không thể theo dõi chính mình",
+    "already_followed": "Đã theo dõi người dùng này",
+    "not_followed": "Không theo dõi người dùng này"
+  },
+  "article": {
+    "not_found": "Bài viết không tìm thấy"
+  },
+  "comment": {
+    "not_found": "Bình luận không tìm thấy",
+    "not_authorized_to_delete": "Bạn không được phép xóa bình luận này"
+  }
+}
