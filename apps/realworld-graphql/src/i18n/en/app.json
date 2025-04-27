@@ -1,0 +1,37 @@
+{
+  "common": {
+    "internal_server_error": "Has occurred an internal server error",
+    "entity_not_found": "Entity not found",
+    "validation": {
+      "error": "Common validation",
+      "is_empty": "Can't be empty",
+      "is_string": "Must be a string"
+    },
+    "error": {
+      "unique_username": "Username already exists",
+      "unique_email": "Email already exists",
+      "unique_follow": "Already following this user",
+      "unique_tag": "Tag already exists",
+      "unique_favorite": "Already favorited this article",
+      "unique_slug": "Article slug already exists"
+    }
+  },
+  "user": {
+    "username_or_email_exists": "Username or email already exists",
+    "not_found": "User not found",
+    "exist": "User already exists"
+  },
+  "profile": {
+    "not_found": "Profile not found",
+    "following_self": "You can't follow yourself",
+    "already_followed": "Already following this user",
+    "not_followed": "Not following this user"
+  },
+  "article": {
+    "not_found": "Article not found"
+  },
+  "comment": {
+    "not_found": "comment not found",
+    "not_authorized_to_delete": "You are not authorized to delete this comment"
+  }
+}

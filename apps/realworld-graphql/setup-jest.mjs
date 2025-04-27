@@ -1,0 +1,28 @@
+/* eslint-disable no-undef */
+process.env.NODE_ENV = 'test';
+process.env.APP_NAME = 'NestJS API';
+process.env.APP_URL = 'http://localhost:3000';
+process.env.APP_PORT = '3000';
+process.env.APP_DEBUG = 'false';
+process.env.APP_FALLBACK_LANGUAGE = 'en';
+process.env.APP_LOG_LEVEL = 'debug';
+process.env.APP_LOG_SERVICE = 'console';
+process.env.APP_CORS_ORIGIN = 'http://localhost:3000,http://example.com';
+process.env.API_PREFIX = 'api';
+process.env.API_DOCS_ENABLED = 'true';
+process.env.DATABASE_TYPE = 'postgres';
+process.env.DATABASE_HOST = 'localhost';
+process.env.DATABASE_PORT = '5432';
+process.env.DATABASE_USERNAME = 'postgres';
+process.env.DATABASE_PASSWORD = 'postgres';
+process.env.DATABASE_NAME = 'nestjs_api';
+process.env.DATABASE_LOGGING = 'true';
+process.env.DATABASE_SYNCHRONIZE = 'false';
+process.env.DATABASE_MAX_CONNECTIONS = '100';
+process.env.DATABASE_SSL_ENABLED = 'false';
+process.env.DATABASE_REJECT_UNAUTHORIZED = 'false';
+process.env.DATABASE_CA = '';
+process.env.DATABASE_KEY = '';
+process.env.DATABASE_CERT = process.env.MAIL_HOST = 'localhost';
+process.env.AUTH_JWT_SECRET = 'secret';
+process.env.AUTH_JWT_TOKEN_EXPIRES_IN = '1d';
