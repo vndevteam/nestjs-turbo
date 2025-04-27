@@ -3,7 +3,6 @@ import { ErrorCode } from '@/constants/error-code.constant';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import {
   type ArgumentsHost,
-  Catch,
   type ExceptionFilter,
   HttpException,
   HttpStatus,
@@ -23,7 +22,7 @@ import { I18nContext } from 'nestjs-i18n';
 import { EntityNotFoundError, QueryFailedError } from 'typeorm';
 
 // TODO: Will update this filter to handle all exceptions for graphql
-@Catch()
+// @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   private i18n: I18nContext<I18nTranslations>;
   private readonly logger = new Logger(GlobalExceptionFilter.name);

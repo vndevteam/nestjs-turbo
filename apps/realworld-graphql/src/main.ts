@@ -1,16 +1,7 @@
 import compression from '@fastify/compress';
 import helmet from '@fastify/helmet';
-import {
-  ClassSerializerInterceptor,
-  HttpStatus,
-  RequestMethod,
-  UnprocessableEntityException,
-  ValidationError,
-  ValidationPipe,
-  VersioningType,
-} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -26,9 +17,6 @@ import {
 } from '@repo/nest-common';
 import { AppModule } from './app.module';
 import { AllConfigType } from './config/config.type';
-import { GlobalExceptionFilter } from './filters/global-exception.filter';
-import { AuthGuard } from './guards/auth.guard';
-import { AuthService } from './modules/auth/auth.service';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter({
@@ -45,12 +33,28 @@ async function bootstrap() {
     },
   );
 
+  // Get services
+  const configService = app.get(ConfigService<AllConfigType>);
+  const reflector = app.get(Reflector);
+
   // Configure the logger
   const asyncContext = app.get(AsyncContextProvider);
   const logger = new FastifyPinoLogger(
     asyncContext,
     fastifyAdapter.getInstance().log,
   );
+
+  // If you want to use the console logger, uncomment the following code
+  // const logger = new ConsoleLogger({
+  //   ...(configService.getOrThrow('app.nodeEnv', { infer: true }) ===
+  //     Environment.LOCAL && {
+  //     colors: true,
+  //   }),
+  //   ...(configService.getOrThrow('app.nodeEnv', { infer: true }) !==
+  //     Environment.LOCAL && {
+  //     json: true,
+  //   }),
+  // });
   app.useLogger(logger);
 
   fastifyAdapter.getInstance().addHook('onRequest', (request, reply, done) => {
@@ -60,26 +64,27 @@ async function bootstrap() {
     }, new Map());
   });
 
-  const configService = app.get(ConfigService<AllConfigType>);
-  const reflector = app.get(Reflector);
-
   // Setup security headers
   const devContentSecurityPolicy = {
     directives: {
-      defaultSrc: ["'self'"],
+      defaultSrc: ["'self'", 'https://sandbox.embed.apollographql.com'],
       scriptSrc: [
         "'self'",
         "'unsafe-inline'",
         'https://unpkg.com',
-        'https://cdn.jsdelivr.net',
+        'https://embeddable-sandbox.cdn.apollographql.com',
       ],
       styleSrc: [
         "'self'",
         "'unsafe-inline'",
         'https://unpkg.com',
-        'https://cdn.jsdelivr.net',
+        'https://fonts.googleapis.com',
       ],
-      imgSrc: ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
+      imgSrc: [
+        "'self'",
+        'data:',
+        'https://apollo-server-landing-page.cdn.apollographql.com',
+      ],
     },
   };
 
@@ -106,47 +111,29 @@ async function bootstrap() {
   });
   logger.log(`CORS Origin: ${corsOrigin.toString()}`);
 
-  // Use global prefix if you don't have subdomain
-  app.setGlobalPrefix(
-    configService.getOrThrow('app.apiPrefix', { infer: true }),
-    {
-      exclude: [
-        // { method: RequestMethod.GET, path: '/' }, // Middeware not working when using exclude by root path https://github.com/nestjs/nest/issues/13401
-        { method: RequestMethod.GET, path: 'health' },
-      ],
-    },
-  );
+  // app.useGlobalGuards(new AuthGuard(reflector, app.get(AuthService)));
+  // app.useGlobalFilters(
+  //   new GlobalExceptionFilter(
+  //     app.get(HttpAdapterHost),
+  //     configService.getOrThrow('app.debug', { infer: true }),
+  //   ),
+  // );
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     transform: true,
+  //     whitelist: true,
+  //     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+  //     exceptionFactory: (errors: ValidationError[]) => {
+  //       return new UnprocessableEntityException(errors);
+  //     },
+  //   }),
+  // );
 
-  app.enableVersioning({
-    type: VersioningType.URI,
-  });
-
-  app.useGlobalGuards(new AuthGuard(reflector, app.get(AuthService)));
-  app.useGlobalFilters(
-    new GlobalExceptionFilter(
-      app.get(HttpAdapterHost),
-      configService.getOrThrow('app.debug', { infer: true }),
-    ),
-  );
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-      exceptionFactory: (errors: ValidationError[]) => {
-        return new UnprocessableEntityException(errors);
-      },
-    }),
-  );
-
-  app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(reflector, {
-      excludeExtraneousValues: true,
-    }),
-  );
-
-  // TODO: Config graphql docs
-  // if (configService.getOrThrow('app.apiDocsEnabled', { infer: true })) {}
+  // app.useGlobalInterceptors(
+  //   new ClassSerializerInterceptor(reflector, {
+  //     excludeExtraneousValues: true,
+  //   }),
+  // );
 
   await app.listen(
     configService.getOrThrow('app.port', { infer: true }) as number,

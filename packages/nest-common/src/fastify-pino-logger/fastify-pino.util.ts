@@ -3,7 +3,11 @@ import hyperid from 'hyperid';
 
 export const REQUEST_ID_HEADER = 'X-Request-Id';
 
-export type FastifyLoggerEnv = 'development' | 'staging' | 'production';
+export type FastifyLoggerEnv =
+  | 'local'
+  | 'development'
+  | 'staging'
+  | 'production';
 
 const developmentLogger = (): any => {
   return {
@@ -69,12 +73,13 @@ export function fastifyPinoOptions(
   env: FastifyLoggerEnv,
 ): (FastifyLoggerOptions & PinoLoggerOptions) | boolean {
   const envToLogger = {
+    local: developmentLogger(),
     development: developmentLogger(),
     production: {
       level: 'debug',
     },
     staging: {
-      level: 'info',
+      level: 'debug',
     },
   } as const;
 
