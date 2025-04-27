@@ -16,7 +16,7 @@ import {
   I18nModule,
   QueryResolver,
 } from 'nestjs-i18n';
-import path from 'path';
+import path, { join } from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
@@ -24,6 +24,7 @@ import { AllConfigType } from './config/config.type';
 import { ApiModule } from './modules/api.module';
 import authConfig from './modules/auth/config/auth.config';
 // import { TypeOrmConfigService } from './database/mysql-typeorm-config.service'; // Uncomment this line if you are using MySQL
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 
 const configModule = ConfigModule.forRoot({
@@ -71,20 +72,30 @@ const i18nModule = I18nModule.forRootAsync({
   inject: [ConfigService],
 });
 
-@Module({
-  imports: [
-    configModule,
-    dbModule,
-    i18nModule,
-    ApiModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+const graphqlModule = GraphQLModule.forRootAsync<ApolloDriverConfig>({
+  driver: ApolloDriver,
+  useFactory: (configService: ConfigService<AllConfigType>) => {
+    const isLocal: boolean =
+      configService.get('app.nodeEnv', { infer: true }) === Environment.LOCAL;
+    return {
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      graphiql: true,
-      introspection: true,
-    }),
-  ],
+      // graphiql: isLocal, // Uncomment this line if you want to use GraphiQL instead of the playground or the Apollo Sandbox
+      introspection: isLocal,
+      playground: false,
+      plugins: [
+        ApolloServerPluginLandingPageLocalDefault({
+          embed: isLocal ? true : undefined,
+        }),
+      ],
+    };
+  },
+  inject: [ConfigService],
+});
+
+@Module({
+  imports: [configModule, dbModule, i18nModule, ApiModule, graphqlModule],
   providers: [AppService, AsyncContextProvider, FastifyPinoLogger, AppResolver],
   exports: [AsyncContextProvider],
 })
