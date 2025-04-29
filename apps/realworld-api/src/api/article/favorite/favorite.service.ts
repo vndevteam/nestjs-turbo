@@ -2,7 +2,7 @@ import { ErrorCode } from '@/constants/error-code.constant';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ValidationException } from '@repo/api';
-import { ArticleEntity, UserEntity } from '@repo/database-typeorm';
+import { ArticleEntity, UserEntity } from '@repo/mysql-typeorm';
 import { Repository } from 'typeorm';
 import { toArticleDto } from '../article.util';
 import { ArticleResDto } from '../dto/article.dto';

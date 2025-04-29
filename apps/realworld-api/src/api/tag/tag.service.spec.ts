@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { TagEntity } from '@repo/database-typeorm';
+import { TagEntity } from '@repo/mysql-typeorm';
 import { Repository } from 'typeorm';
 import { TagService } from './tag.service';
 

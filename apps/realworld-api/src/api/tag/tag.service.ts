@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TagEntity } from '@repo/database-typeorm';
+import { TagEntity } from '@repo/mysql-typeorm';
 import { Repository } from 'typeorm';
 import { TagListResDto } from './dto/tag-list.dto';
 

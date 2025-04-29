@@ -3,11 +3,7 @@ import { ErrorCode } from '@/constants/error-code.constant';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ValidationException } from '@repo/api';
-import {
-  ArticleEntity,
-  CommentEntity,
-  UserEntity,
-} from '@repo/database-typeorm';
+import { ArticleEntity, CommentEntity, UserEntity } from '@repo/mysql-typeorm';
 import { Repository } from 'typeorm';
 import { CommentListResDto } from './dto/comment-list.dto';
 import { CommentResDto } from './dto/comment.dto';

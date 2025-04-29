@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { UserEntity } from '@repo/database-typeorm';
-import { UserFollowsEntity } from '@repo/database-typeorm/entities/user-follows.entity';
+import { UserEntity } from '@repo/mysql-typeorm';
+import { UserFollowsEntity } from '@repo/mysql-typeorm/entities/user-follows.entity';
 import { Repository } from 'typeorm';
 import { ProfileService } from './profile.service';
 

@@ -1,4 +1,4 @@
-import { ArticleEntity, UserEntity } from '@repo/database-typeorm';
+import { ArticleEntity, UserEntity } from '@repo/mysql-typeorm';
 import { ProfileDto } from '../profile/dto/profile.dto';
 import { ArticleDto } from './dto/article.dto';
 

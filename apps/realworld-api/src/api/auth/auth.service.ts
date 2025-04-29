@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '@repo/database-typeorm';
+import { UserEntity } from '@repo/mysql-typeorm';
 import { verifyPassword } from '@repo/nest-common';
 import { Repository } from 'typeorm';
 import { UserResDto } from '../user/dto/user.dto';

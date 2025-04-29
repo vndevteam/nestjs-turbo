@@ -1,10 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import {
-  ArticleEntity,
-  CommentEntity,
-  UserEntity,
-} from '@repo/database-typeorm';
+import { ArticleEntity, CommentEntity, UserEntity } from '@repo/mysql-typeorm';
 import { Repository } from 'typeorm';
 import { CommentService } from './comment.service';
 

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { ArticleEntity, TagEntity, UserEntity } from '@repo/database-typeorm';
+import { ArticleEntity, TagEntity, UserEntity } from '@repo/mysql-typeorm';
 import { I18nService } from 'nestjs-i18n';
 import { Repository } from 'typeorm';
 import { ArticleService } from './article.service';
