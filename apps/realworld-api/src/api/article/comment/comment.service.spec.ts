@@ -17,30 +17,40 @@ describe('CommentService', () => {
   let userRepository: Repository<UserEntity>;
   let commentRepository: Repository<CommentEntity>;
 
+  const mockArticleRepository = {
+    findOneBy: jest.fn(),
+  };
+
+  const mockUserRepository = {
+    findOneByOrFail: jest.fn(),
+  };
+
+  const mockCommentRepository = {
+    save: jest.fn(),
+    find: jest.fn(),
+    findOneBy: jest.fn(),
+    remove: jest.fn(),
+  };
+
+  const slug = 'test-article';
+  const commentData: CreateCommentReqDto = { body: 'Test comment' };
+  const userId = 1;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CommentService,
         {
           provide: getRepositoryToken(ArticleEntity),
-          useValue: {
-            findOneBy: jest.fn(),
-          },
+          useValue: mockArticleRepository,
         },
         {
           provide: getRepositoryToken(UserEntity),
-          useValue: {
-            findOneByOrFail: jest.fn(),
-          },
+          useValue: mockUserRepository,
         },
         {
           provide: getRepositoryToken(CommentEntity),
-          useValue: {
-            save: jest.fn(),
-            find: jest.fn(),
-            findOneBy: jest.fn(),
-            remove: jest.fn(),
-          },
+          useValue: mockCommentRepository,
         },
       ],
     }).compile();
@@ -59,18 +69,14 @@ describe('CommentService', () => {
 
   describe('create', () => {
     it('should create a comment successfully', async () => {
-      const slug = 'test-article';
-      const commentData: CreateCommentReqDto = { body: 'Test comment' };
-      const userId = 1;
-
-      jest
-        .spyOn(articleRepository, 'findOneBy')
-        .mockResolvedValue({ id: 1 } as ArticleEntity);
-      jest.spyOn(userRepository, 'findOneByOrFail').mockResolvedValue({
+      mockArticleRepository.findOneBy.mockResolvedValue({
+        id: 1,
+      } as ArticleEntity);
+      mockUserRepository.findOneByOrFail.mockResolvedValue({
         id: userId,
         toDto: jest.fn().mockReturnValue({ username: 'test-user' }),
       } as any);
-      jest.spyOn(commentRepository, 'save').mockResolvedValue({
+      mockCommentRepository.save.mockResolvedValue({
         id: 1,
         body: 'Test comment',
         articleId: 1,
@@ -91,22 +97,20 @@ describe('CommentService', () => {
     });
 
     it('should throw ValidationException if article does not exist', async () => {
-      jest.spyOn(articleRepository, 'findOneBy').mockResolvedValue(null);
+      mockArticleRepository.findOneBy.mockResolvedValue(null);
 
       await expect(
-        service.create('invalid-slug', { body: 'Test comment' }, 1),
+        service.create('invalid-slug', { body: 'Test comment' }, userId),
       ).rejects.toThrow(ValidationException);
     });
   });
 
   describe('list', () => {
     it('should return a list of comments', async () => {
-      const slug = 'test-article';
-
-      jest
-        .spyOn(articleRepository, 'findOneBy')
-        .mockResolvedValue({ id: 1 } as ArticleEntity);
-      jest.spyOn(commentRepository, 'find').mockResolvedValue([
+      mockArticleRepository.findOneBy.mockResolvedValue({
+        id: 1,
+      } as ArticleEntity);
+      mockCommentRepository.find.mockResolvedValue([
         {
           id: 1,
           body: 'Comment 1',
@@ -130,7 +134,7 @@ describe('CommentService', () => {
     });
 
     it('should throw ValidationException if article does not exist', async () => {
-      jest.spyOn(articleRepository, 'findOneBy').mockResolvedValue(null);
+      mockArticleRepository.findOneBy.mockResolvedValue(null);
 
       await expect(service.list('invalid-slug')).rejects.toThrow(
         ValidationException,
@@ -140,30 +144,32 @@ describe('CommentService', () => {
 
   describe('delete', () => {
     it('should delete a comment successfully', async () => {
-      const commentId = 1;
-      const userId = 1;
-
-      jest.spyOn(commentRepository, 'findOneBy').mockResolvedValue({
-        id: commentId,
+      mockCommentRepository.findOneBy.mockResolvedValue({
+        id: 1,
         authorId: userId,
       } as CommentEntity);
-      jest.spyOn(commentRepository, 'remove').mockResolvedValue(undefined);
+      mockCommentRepository.remove.mockResolvedValue(undefined);
 
-      await expect(service.delete(commentId, userId)).resolves.toBeUndefined();
+      await expect(service.delete(1, userId)).resolves.toBeUndefined();
     });
 
     it('should throw ValidationException if comment does not exist', async () => {
-      jest.spyOn(commentRepository, 'findOneBy').mockResolvedValue(null);
+      mockCommentRepository.findOneBy.mockResolvedValue(null);
 
-      await expect(service.delete(1, 1)).rejects.toThrow(ValidationException);
+      await expect(service.delete(1, userId)).rejects.toThrow(
+        ValidationException,
+      );
     });
 
     it('should throw ValidationException if user is not the author', async () => {
-      jest
-        .spyOn(commentRepository, 'findOneBy')
-        .mockResolvedValue({ id: 1, authorId: 2 } as CommentEntity);
+      mockCommentRepository.findOneBy.mockResolvedValue({
+        id: 1,
+        authorId: 2,
+      } as CommentEntity);
 
-      await expect(service.delete(1, 1)).rejects.toThrow(ValidationException);
+      await expect(service.delete(1, userId)).rejects.toThrow(
+        ValidationException,
+      );
     });
   });
 });
