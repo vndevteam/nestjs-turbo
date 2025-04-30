@@ -6,16 +6,12 @@ import {
   CommentEntity,
   UserEntity,
 } from '@repo/database-typeorm';
-import { Repository } from 'typeorm';
 
 import { CommentService } from './comment.service';
 import { CreateCommentReqDto } from './dto/create-comment.dto';
 
 describe('CommentService', () => {
   let service: CommentService;
-  let articleRepository: Repository<ArticleEntity>;
-  let userRepository: Repository<UserEntity>;
-  let commentRepository: Repository<CommentEntity>;
 
   const mockArticleRepository = {
     findOneBy: jest.fn(),
@@ -56,15 +52,6 @@ describe('CommentService', () => {
     }).compile();
 
     service = module.get<CommentService>(CommentService);
-    articleRepository = module.get<Repository<ArticleEntity>>(
-      getRepositoryToken(ArticleEntity),
-    );
-    userRepository = module.get<Repository<UserEntity>>(
-      getRepositoryToken(UserEntity),
-    );
-    commentRepository = module.get<Repository<CommentEntity>>(
-      getRepositoryToken(CommentEntity),
-    );
   });
 
   describe('create', () => {
