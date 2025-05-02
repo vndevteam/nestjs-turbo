@@ -1,0 +1,91 @@
+{
+  "info": {
+    "_postman_id": "5e520035-2c88-4975-9c55-bfee48657f89",
+    "name": "realworld-graphql",
+    "description": "Collection for testing the Realworld GraphQL\n\n[https://github.com/vndevteam/nestjs-turbo/tree/develop/apps/realworld-graphql](https://github.com/vndevteam/nestjs-turbo/tree/develop/apps/realworld-graphql)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "1243708"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has the required fields - email, token, username, bio, and image\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data.login.email).to.exist;",
+                  "  pm.expect(responseData.data.login.token).to.exist;",
+                  "  pm.expect(responseData.data.login.username).to.exist;",
+                  "  pm.expect(responseData.data.login.bio).to.exist;",
+                  "  pm.expect(responseData.data.login.image).to.exist;",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Email is in a valid format\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.login.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Token is a non-empty string\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.login.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation Login($loginInput: LoginInput!) {\n    login(loginInput: $loginInput) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
+                "variables": "{\n    \"loginInput\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": []
+    },
+    {
+      "name": "Articles, Favorite, Comments",
+      "item": []
+    },
+    {
+      "name": "Profiles",
+      "item": []
+    },
+    {
+      "name": "Tags",
+      "item": []
+    }
+  ]
+}
