@@ -4,10 +4,20 @@
 
 input CreateUserInput {
   email: String!
+  password: String!
+  username: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 type Mutation {
   createUser(user: CreateUserInput!): User!
+
+  """Sign in"""
+  login(loginInput: LoginInput!): User!
   updateUser(user: UpdateUserInput!): User!
 }
 
@@ -17,9 +27,16 @@ type Query {
 }
 
 input UpdateUserInput {
-  email: String!
+  email: String
+  id: Float!
+  password: String
+  username: String
 }
 
 type User {
+  bio: String!
   email: String!
+  image: String!
+  token: String!
+  username: String!
 }

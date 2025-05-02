@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "0574ad8a-a525-43ae-8e1e-5fd9756037f4",
-    "name": "Realworld",
-    "description": "Collection for testing the Realworld API\n\nhttps://github.com/gothinkster/realworld",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "_postman_id": "ecdf0a01-3579-4cad-a0f9-b235c3005d76",
+    "name": "Realworld API",
+    "description": "Collection for testing the Realworld API\n\n[https://github.com/vndevteam/nestjs-turbo/tree/develop/apps/realworld-api](https://github.com/vndevteam/nestjs-turbo/tree/develop/apps/realworld-api)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "1243708"
   },
   "item": [
     {
@@ -65,21 +66,39 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
-                  "var responseJSON = JSON.parse(responseBody);",
+                  "var responseJSON = pm.response.json();",
                   "",
-                  "tests['Response contains \"user\" property'] = responseJSON.hasOwnProperty('user');",
+                  "// Check if the response contains the \"user\" property",
+                  "pm.test('Response contains \"user\" property', () => {",
+                  "    pm.expect(responseJSON).to.have.property('user');",
+                  "});",
                   "",
-                  "var user = responseJSON.user || {};",
+                  "// Check if the \"user\" property has the required fields",
+                  "pm.test('User has \"email\" property', () => {",
+                  "    pm.expect(responseJSON.user).to.have.property('email');",
+                  "});",
                   "",
-                  "tests['User has \"email\" property'] = user.hasOwnProperty('email');",
-                  "tests['User has \"username\" property'] = user.hasOwnProperty('username');",
-                  "tests['User has \"bio\" property'] = user.hasOwnProperty('bio');",
-                  "tests['User has \"image\" property'] = user.hasOwnProperty('image');",
-                  "tests['User has \"token\" property'] = user.hasOwnProperty('token');",
+                  "pm.test('User has \"username\" property', () => {",
+                  "    pm.expect(responseJSON.user).to.have.property('username');",
+                  "});",
+                  "",
+                  "pm.test('User has \"bio\" property', () => {",
+                  "    pm.expect(responseJSON.user).to.have.property('bio');",
+                  "});",
+                  "",
+                  "pm.test('User has \"image\" property', () => {",
+                  "    pm.expect(responseJSON.user).to.have.property('image');",
+                  "});",
+                  "",
+                  "pm.test('User has \"token\" property', () => {",
+                  "    pm.expect(responseJSON.user).to.have.property('token');",
+                  "});",
+                  "",
                   ""
-                ]
+                ],
+                "type": "text/javascript",
+                "packages": {}
               }
             }
           ],
@@ -113,7 +132,6 @@
             {
               "listen": "test",
               "script": {
-                "id": "a7674032-bf09-4ae7-8224-4afa2fb1a9f9",
                 "type": "text/javascript",
                 "exec": [
                   "var responseJSON = JSON.parse(responseBody);",
@@ -202,10 +220,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/user",
               "host": ["{{APIURL}}"],
@@ -327,10 +341,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles",
               "host": ["{{APIURL}}"],
@@ -395,10 +405,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?author=johnjacob",
               "host": ["{{APIURL}}"],
@@ -469,10 +475,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?favorited={{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -543,10 +545,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?tag=dragons",
               "host": ["{{APIURL}}"],
@@ -572,7 +570,6 @@
             {
               "listen": "test",
               "script": {
-                "id": "e711dbf8-8065-4ba8-8b74-f1639a7d8208",
                 "type": "text/javascript",
                 "exec": [
                   "var responseJSON = JSON.parse(responseBody);",
@@ -690,10 +687,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles/feed",
               "host": ["{{APIURL}}"],
@@ -762,10 +755,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles",
               "host": ["{{APIURL}}"],
@@ -834,10 +823,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles",
               "host": ["{{APIURL}}"],
@@ -906,10 +891,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?author={{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -984,10 +965,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?author={{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -1051,10 +1028,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles/{{slug}}",
               "host": ["{{APIURL}}"],
@@ -1119,10 +1092,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?tag=dragons",
               "host": ["{{APIURL}}"],
@@ -1316,10 +1285,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?favorited={{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -1387,10 +1352,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles?favorited={{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -1473,7 +1434,6 @@
             {
               "listen": "test",
               "script": {
-                "id": "9f90c364-cc68-4728-961a-85eb00197d7b",
                 "type": "text/javascript",
                 "exec": [
                   "var responseJSON = JSON.parse(responseBody);",
@@ -1574,10 +1534,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles/{{slug}}/comments",
               "host": ["{{APIURL}}"],
@@ -1632,10 +1588,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/articles/{{slug}}/comments",
               "host": ["{{APIURL}}"],
@@ -1709,7 +1661,6 @@
         {
           "listen": "prerequest",
           "script": {
-            "id": "67853a4a-e972-4573-a295-dad12a46a9d7",
             "type": "text/javascript",
             "exec": [""]
           }
@@ -1717,7 +1668,6 @@
         {
           "listen": "test",
           "script": {
-            "id": "3057f989-15e4-484e-b8fa-a041043d0ac0",
             "type": "text/javascript",
             "exec": [""]
           }
@@ -1824,10 +1774,6 @@
                 "value": "Token {{token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/profiles/celeb_{{USERNAME}}",
               "host": ["{{APIURL}}"],
@@ -1996,10 +1942,6 @@
                 "value": "XMLHttpRequest"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{APIURL}}/tags",
               "host": ["{{APIURL}}"],
