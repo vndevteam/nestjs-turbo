@@ -53,7 +53,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.3",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typeorm-extension": "^3.7.1",
