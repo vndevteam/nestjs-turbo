@@ -48,13 +48,13 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "env-cmd": "^10.1.0",
-    "pg": "^8.15.1",
+    "pg": "^8.15.6",
     "typeorm": "^0.3.22"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.3",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typeorm-extension": "^3.7.1",
