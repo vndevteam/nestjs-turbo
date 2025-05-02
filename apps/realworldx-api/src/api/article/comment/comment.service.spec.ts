@@ -4,7 +4,7 @@ import {
   ArticleEntity,
   CommentEntity,
   UserEntity,
-} from '@repo/database-typeorm';
+} from '@repo/postgresql-typeorm';
 import { Repository } from 'typeorm';
 import { CommentService } from './comment.service';
 

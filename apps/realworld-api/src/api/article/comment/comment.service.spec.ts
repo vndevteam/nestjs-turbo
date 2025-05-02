@@ -5,7 +5,7 @@ import {
   ArticleEntity,
   CommentEntity,
   UserEntity,
-} from '@repo/database-typeorm';
+} from '@repo/postgresql-typeorm';
 
 import { CommentService } from './comment.service';
 import { CreateCommentReqDto } from './dto/create-comment.dto';

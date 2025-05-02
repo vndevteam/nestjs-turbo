@@ -2,12 +2,12 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { appConfig, Environment } from '@repo/api';
-import { databaseConfig } from '@repo/database-typeorm';
 import {
   AsyncContextProvider,
   FastifyPinoLogger,
   RequestIdMiddleware,
 } from '@repo/nest-common';
+import { databaseConfig } from '@repo/postgresql-typeorm';
 import {
   AcceptLanguageResolver,
   HeaderResolver,

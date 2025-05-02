@@ -102,7 +102,7 @@ The project includes several shared packages used across different profiles:
 
 ### Database Packages
 
-#### TypeORM Package (`@repo/database-typeorm`)
+#### TypeORM Package (`@repo/postgresql-typeorm`)
 
 - TypeORM configurations
 - Database migrations

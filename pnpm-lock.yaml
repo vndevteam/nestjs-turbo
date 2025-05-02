@@ -120,9 +120,9 @@ importers:
       '@repo/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@repo/database-typeorm':
+      '@repo/postgresql-typeorm':
         specifier: workspace:*
-        version: link:../../packages/database-typeorm
+        version: link:../../packages/postgresql-typeorm
       '@repo/nest-common':
         specifier: workspace:*
         version: link:../../packages/nest-common
@@ -253,9 +253,9 @@ importers:
       '@repo/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@repo/database-typeorm':
+      '@repo/postgresql-typeorm':
         specifier: workspace:*
-        version: link:../../packages/database-typeorm
+        version: link:../../packages/postgresql-typeorm
       '@repo/nest-common':
         specifier: workspace:*
         version: link:../../packages/nest-common
@@ -386,9 +386,9 @@ importers:
       '@repo/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@repo/database-typeorm':
+      '@repo/postgresql-typeorm':
         specifier: workspace:*
-        version: link:../../packages/database-typeorm
+        version: link:../../packages/postgresql-typeorm
       '@repo/nest-common':
         specifier: workspace:*
         version: link:../../packages/nest-common
@@ -582,7 +582,7 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  packages/database-typeorm:
+  packages/postgresql-typeorm:
     dependencies:
       '@nestjs/config':
         specifier: ^4.0.2

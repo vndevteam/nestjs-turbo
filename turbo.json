@@ -48,13 +48,13 @@
       "dependsOn": ["^lint"]
     },
     "test:e2e": {},
-    "@repo/database-typeorm#migration:up": {
+    "@repo/postgresql-typeorm#migration:up": {
       "cache": false
     },
-    "@repo/database-typeorm#migration:down": {
+    "@repo/postgresql-typeorm#migration:down": {
       "cache": false
     },
-    "@repo/database-typeorm#migration:generate": {
+    "@repo/postgresql-typeorm#migration:generate": {
       "cache": false
     }
   }

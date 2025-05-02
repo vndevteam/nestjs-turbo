@@ -1,5 +1,5 @@
 {
-  "name": "@repo/database-typeorm",
+  "name": "@repo/postgresql-typeorm",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
