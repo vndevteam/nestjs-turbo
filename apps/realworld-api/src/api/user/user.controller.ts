@@ -7,8 +7,8 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 import { ApiBody, ApiTags, getSchemaPath } from '@nestjs/swagger';
-import { CurrentUser } from '@repo/api';
 import { ApiAuth, ApiPublic } from '@repo/api/decorators/http.decorators';
+import { CurrentUser } from '@repo/nest-common';
 import { CreateUserReqDto } from './dto/create-user.dto';
 import { UpdateUserReqDto } from './dto/update-user.dto';
 import { UserResDto } from './dto/user.dto';

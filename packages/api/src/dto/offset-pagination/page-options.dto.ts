@@ -1,4 +1,5 @@
-import { DEFAULT_PAGE_LIMIT, Order } from '../../constants';
+import { Order } from '@repo/nest-common';
+import { DEFAULT_PAGE_LIMIT } from '../../constants';
 import {
   EnumFieldOptional,
   NumberFieldOptional,

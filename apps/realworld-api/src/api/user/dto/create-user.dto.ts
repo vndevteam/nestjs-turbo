@@ -1,9 +1,5 @@
-import {
-  EmailField,
-  lowerCaseTransformer,
-  PasswordField,
-  StringField,
-} from '@repo/api';
+import { EmailField, PasswordField, StringField } from '@repo/api';
+import { lowerCaseTransformer } from '@repo/nest-common';
 import { Transform } from 'class-transformer';
 
 export class CreateUserReqDto {

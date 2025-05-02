@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_AUTH_OPTIONAL, IS_PUBLIC } from '@repo/api';
+import { IS_AUTH_OPTIONAL, IS_PUBLIC } from '@repo/nest-common';
 import { type FastifyRequest } from 'fastify';
 import { AuthService } from 'src/modules/auth/auth.service';
 

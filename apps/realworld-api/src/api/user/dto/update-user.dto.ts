@@ -1,8 +1,5 @@
-import {
-  EmailFieldOptional,
-  lowerCaseTransformer,
-  StringFieldOptional,
-} from '@repo/api';
+import { EmailFieldOptional, StringFieldOptional } from '@repo/api';
+import { lowerCaseTransformer } from '@repo/nest-common';
 import { Transform } from 'class-transformer';
 import { IsUrl } from 'class-validator';
 

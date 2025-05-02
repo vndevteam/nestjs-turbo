@@ -16,13 +16,12 @@ import {
   ApiSecurity,
   getSchemaPath,
 } from '@nestjs/swagger';
+import { AuthOptional, Public } from '@repo/nest-common';
 import { STATUS_CODES } from 'http';
 import { ErrorDto } from '../dto';
 import { CursorPaginatedDto } from '../dto/cursor-pagination/paginated.dto';
 import { OffsetPaginatedDto } from '../dto/offset-pagination/paginated.dto';
 import { PagePaginatedDto } from '../dto/page-pagination/paginated.dto';
-import { AuthOptional } from './auth-optional.decorator';
-import { Public } from './public.decorator';
 
 type ApiResponseType = number;
 type ApiAuthType = 'basic' | 'api-key' | 'jwt';

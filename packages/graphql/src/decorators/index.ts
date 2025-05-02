@@ -1,2 +1,1 @@
 export * from './field.decorators';
-export * from './http.decorators';

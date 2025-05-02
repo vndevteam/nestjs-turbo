@@ -1,9 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { appConfig, Environment } from '@repo/api';
+import { appConfig } from '@repo/api';
 import {
   AsyncContextProvider,
+  Environment,
   FastifyPinoLogger,
   RequestIdMiddleware,
 } from '@repo/nest-common';

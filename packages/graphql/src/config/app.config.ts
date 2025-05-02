@@ -62,14 +62,6 @@ class EnvironmentVariablesValidator {
   )
   @IsOptional()
   APP_CORS_ORIGIN: string;
-
-  @IsString()
-  @IsOptional()
-  API_PREFIX: string;
-
-  @IsBoolean()
-  @IsOptional()
-  API_DOCS_ENABLED: boolean;
 }
 
 export default registerAs<AppConfig>('app', () => {
@@ -88,12 +80,10 @@ export default registerAs<AppConfig>('app', () => {
     url: process.env.APP_URL || `http://localhost:${port}`,
     port,
     debug: process.env.APP_DEBUG === 'true',
-    apiPrefix: process.env.API_PREFIX || 'api',
     fallbackLanguage: process.env.APP_FALLBACK_LANGUAGE || 'en',
     logLevel: process.env.APP_LOG_LEVEL || 'warn',
     logService: process.env.APP_LOG_SERVICE || LogService.CONSOLE,
     corsOrigin: getCorsOrigin(),
-    apiDocsEnabled: process.env.API_DOCS_ENABLED === 'true',
   };
 });
 

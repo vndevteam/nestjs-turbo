@@ -8,8 +8,8 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CurrentUser } from '@repo/api';
 import { ApiAuth } from '@repo/api/decorators/http.decorators';
+import { CurrentUser } from '@repo/nest-common';
 import { ProfileResDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
 
