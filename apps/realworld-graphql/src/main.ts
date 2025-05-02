@@ -6,9 +6,9 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { Environment } from '@repo/api';
 import {
   AsyncContextProvider,
+  Environment,
   FastifyLoggerEnv,
   FastifyPinoLogger,
   fastifyPinoOptions,

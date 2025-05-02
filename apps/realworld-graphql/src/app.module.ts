@@ -3,9 +3,9 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { appConfig, Environment } from '@repo/api';
 import {
   AsyncContextProvider,
+  Environment,
   FastifyPinoLogger,
   RequestIdMiddleware,
 } from '@repo/nest-common';
@@ -25,6 +25,7 @@ import { ApiModule } from './modules/api.module';
 import authConfig from './modules/auth/config/auth.config';
 // import { TypeOrmConfigService } from './database/mysql-typeorm-config.service'; // Uncomment this line if you are using MySQL
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { appConfig } from '@repo/graphql';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 
 const configModule = ConfigModule.forRoot({
