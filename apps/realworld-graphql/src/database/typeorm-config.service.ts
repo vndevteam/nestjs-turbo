@@ -2,7 +2,7 @@ import { AllConfigType } from '@/config/config.type';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { TypeOrmCustomLogger } from '@repo/database-typeorm';
+import { TypeOrmCustomLogger } from '@repo/postgresql-typeorm';
 import { join } from 'path';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService<AllConfigType>) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const modulePath = require.resolve('@repo/database-typeorm');
+    const modulePath = require.resolve('@repo/postgresql-typeorm');
     const nodeModulesDir = join(modulePath, '..', '..');
 
     return {

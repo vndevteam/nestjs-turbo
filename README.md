@@ -29,7 +29,7 @@ This is a monorepo built with [Turborepo](https://turbo.build/repo) and [NestJS]
 ### Packages
 
 - `packages/api`: Common library for APIs
-- `packages/database-typeorm`: TypeORM configuration and utilities
+- `packages/postgresql-typeorm`: TypeORM configuration and utilities for PostgreSQL
 - `packages/mysql-typeorm`: MySQL configuration with TypeORM
 - `packages/nest-common`: Common modules and services for NestJS
 - `packages/ui`: UI components library

@@ -7,7 +7,7 @@ import {
   ArticleEntity,
   CommentEntity,
   UserEntity,
-} from '@repo/database-typeorm';
+} from '@repo/postgresql-typeorm';
 import { Repository } from 'typeorm';
 import { CommentListResDto } from './dto/comment-list.dto';
 import { CommentResDto } from './dto/comment.dto';

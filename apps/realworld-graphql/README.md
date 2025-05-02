@@ -109,16 +109,16 @@ pnpm --filter=realworld-api start:debug
 
 # Database Migrations
 # Run pending migrations
-pnpm --filter=@repo/database-typeorm migration:up
+pnpm --filter=@repo/postgresql-typeorm migration:up
 
 # Revert last migration
-pnpm --filter=@repo/database-typeorm migration:down
+pnpm --filter=@repo/postgresql-typeorm migration:down
 
 # Generate new migration
-pnpm --filter=@repo/database-typeorm migration:generate src/migrations/<migration-name>
+pnpm --filter=@repo/postgresql-typeorm migration:generate src/migrations/<migration-name>
 
 # Show migration status
-pnpm --filter=@repo/database-typeorm migration:show
+pnpm --filter=@repo/postgresql-typeorm migration:show
 ```
 
 ## Build
