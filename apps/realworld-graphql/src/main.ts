@@ -1,5 +1,11 @@
 import compression from '@fastify/compress';
 import helmet from '@fastify/helmet';
+import {
+  HttpStatus,
+  UnprocessableEntityException,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
@@ -118,16 +124,17 @@ async function bootstrap() {
   //     configService.getOrThrow('app.debug', { infer: true }),
   //   ),
   // );
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     transform: true,
-  //     whitelist: true,
-  //     errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-  //     exceptionFactory: (errors: ValidationError[]) => {
-  //       return new UnprocessableEntityException(errors);
-  //     },
-  //   }),
-  // );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      exceptionFactory: (errors: ValidationError[]) => {
+        return new UnprocessableEntityException(errors);
+      },
+    }),
+  );
 
   // app.useGlobalInterceptors(
   //   new ClassSerializerInterceptor(reflector, {

@@ -79,7 +79,6 @@ const graphqlModule = GraphQLModule.forRootAsync<ApolloDriverConfig>({
     const isLocal: boolean =
       configService.get('app.nodeEnv', { infer: true }) === Environment.LOCAL;
     return {
-      driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       // graphiql: isLocal, // Uncomment this line if you want to use GraphiQL instead of the playground or the Apollo Sandbox
