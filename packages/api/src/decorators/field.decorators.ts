@@ -413,7 +413,8 @@ export function URLField(
 }
 
 export function URLFieldOptional(
-  options: Omit<ApiPropertyOptions, 'type'> & IStringFieldOptions = {},
+  options: Omit<ApiPropertyOptions, 'type' | 'required'> &
+    IStringFieldOptions = {},
 ): PropertyDecorator {
   return applyDecorators(
     IsOptional({ each: options.each }),

@@ -1,10 +1,11 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { EmailField, PasswordField } from '@repo/graphql';
 
 @InputType()
 export class LoginInput {
-  @Field(() => String)
+  @EmailField({ description: 'Email address' })
   readonly email: string;
 
-  @Field(() => String)
+  @PasswordField({ description: 'Password' })
   readonly password: string;
 }
