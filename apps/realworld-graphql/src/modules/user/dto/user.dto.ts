@@ -1,19 +1,40 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import {
+  EmailField,
+  EmailFieldOptional,
+  PasswordField,
+  StringField,
+  StringFieldOptional,
+  URLFieldOptional,
+} from '@repo/graphql';
+import { lowerCaseTransformer } from '@repo/nest-common';
+import { Transform } from 'class-transformer';
 
-@InputType()
+@InputType({ description: 'User register request' })
 export class CreateUserInput {
-  @Field(() => String)
+  @EmailField()
   email: string;
 
-  @Field(() => String)
+  @StringField()
+  @Transform(lowerCaseTransformer)
   username: string;
 
-  @Field(() => String)
+  @PasswordField()
   password: string;
 }
 
-@InputType()
-export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field(() => Number)
-  id: number;
+@InputType({ description: 'User update request' })
+export class UpdateUserInput {
+  @EmailFieldOptional()
+  email?: string;
+
+  @StringFieldOptional()
+  @Transform(lowerCaseTransformer)
+  username?: string;
+
+  @StringFieldOptional()
+  bio?: string;
+
+  @URLFieldOptional()
+  image?: string;
 }

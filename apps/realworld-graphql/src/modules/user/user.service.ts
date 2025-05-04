@@ -39,27 +39,24 @@ export class UserService {
     const newUser = this.userRepository.create({ username, email, password });
     const savedUser = await this.userRepository.save(newUser);
 
-    return {
-      ...savedUser,
-      token: await this.authService.createToken({ id: savedUser.id }),
-    };
+    return savedUser;
   }
 
-  async update(dto: UpdateUserInput) {
-    const user = await this.userRepository.findOneBy({ id: dto.id });
+  async update(userId: number, dto: UpdateUserInput) {
+    const user = await this.userRepository.findOneBy({ id: userId });
 
     if (!user) {
       throw new ValidationException(ErrorCode.E002);
     }
 
     const savedUser = await this.userRepository.save({
-      id: user.id,
+      id: userId,
       ...dto,
     });
 
     return {
+      ...user,
       ...savedUser,
-      token: await this.authService.createToken({ id: savedUser.id }),
     };
   }
 }

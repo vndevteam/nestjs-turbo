@@ -11,6 +11,71 @@
       "name": "Auth",
       "item": [
         {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has the required fields - email, token, username, bio, and image\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data.createUser.email).to.exist;",
+                  "  pm.expect(responseData.data.createUser.token).to.exist;",
+                  "  pm.expect(responseData.data.createUser.username).to.exist;",
+                  "  pm.expect(responseData.data.createUser.bio).to.exist;",
+                  "  pm.expect(responseData.data.createUser.image).to.exist;",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Email is in a valid format\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.createUser.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Token is a non-empty string\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.createUser.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation CreateUser($user: CreateUserInput!) {\n  createUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"user\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"{{USERNAME}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Login",
           "event": [
             {
@@ -60,6 +125,195 @@
               "graphql": {
                 "query": "mutation Login($loginInput: LoginInput!) {\n    login(loginInput: $loginInput) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
                 "variables": "{\n    \"loginInput\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login and Remember Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "const responseData = pm.response.json();",
+                  "",
+                  "pm.test(\"Response has the required fields - email, token, username, bio, and image\", function () {",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data.login.email).to.exist;",
+                  "  pm.expect(responseData.data.login.token).to.exist;",
+                  "  pm.expect(responseData.data.login.username).to.exist;",
+                  "  pm.expect(responseData.data.login.bio).to.exist;",
+                  "  pm.expect(responseData.data.login.image).to.exist;",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Email is in a valid format\", function () {",
+                  "  pm.expect(responseData.data.login.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Token is a non-empty string\", function () {",
+                  "    pm.expect(responseData.data.login.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+                  "});",
+                  "",
+                  "var login = responseData.data.login || {};",
+                  "",
+                  "if (login.token){",
+                  "    pm.globals.set('token', login.token);",
+                  "}",
+                  "",
+                  "pm.test('Global variable \"token\" has been set', function () {",
+                  "    pm.expect(pm.globals.get('token')).to.equal(login.token);",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation Login($loginInput: LoginInput!) {\n    login(loginInput: $loginInput) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
+                "variables": "{\n    \"loginInput\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Current User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Content-Type header is application/json\", function () {",
+                  "    pm.response.to.have.header('Content-Type', 'application/json; charset=utf-8');",
+                  "});",
+                  "",
+                  "pm.test(\"Data object structure is valid\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    pm.expect(responseData).to.have.property('data');",
+                  "    pm.expect(responseData.data).to.have.property('currentUser');",
+                  "    pm.expect(responseData.data.currentUser).to.have.property('email');",
+                  "    pm.expect(responseData.data.currentUser).to.have.property('username');",
+                  "    pm.expect(responseData.data.currentUser).to.have.property('bio');",
+                  "    pm.expect(responseData.data.currentUser).to.have.property('image');",
+                  "    pm.expect(responseData.data.currentUser).to.have.property('token');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query CurrentUser {\n  currentUser {\n    email\n    token\n    username\n    bio\n    image\n  }\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has the required fields - email, token, username, bio, and image\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data.updateUser.email).to.exist;",
+                  "  pm.expect(responseData.data.updateUser.token).to.exist;",
+                  "  pm.expect(responseData.data.updateUser.username).to.exist;",
+                  "  pm.expect(responseData.data.updateUser.bio).to.exist;",
+                  "  pm.expect(responseData.data.updateUser.image).to.exist;",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Email is in a valid format\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.updateUser.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Token is a non-empty string\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.updateUser.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UpdateUser($user: UpdateUserInput!) {\n  updateUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"user\": {\n        \"email\":\"{{EMAIL}}\"\n    }\n}"
               }
             },
             "url": {

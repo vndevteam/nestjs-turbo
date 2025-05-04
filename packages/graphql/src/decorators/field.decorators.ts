@@ -77,7 +77,10 @@ export function NumberField(
 export function NumberFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & INumberFieldOptions = {},
 ): PropertyDecorator {
-  return NumberField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    NumberField({ nullable: true, ...options }),
+  );
 }
 
 export function StringField(
@@ -108,7 +111,10 @@ export function StringField(
 export function StringFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IStringFieldOptions = {},
 ): PropertyDecorator {
-  return StringField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    StringField({ nullable: true, ...options }),
+  );
 }
 
 export function TokenField(
@@ -136,7 +142,10 @@ export function PasswordField(
 export function PasswordFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IStringFieldOptions = {},
 ): PropertyDecorator {
-  return PasswordField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    PasswordField({ nullable: true, ...options }),
+  );
 }
 
 export function BooleanField(
@@ -157,7 +166,10 @@ export function BooleanField(
 export function BooleanFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IBooleanFieldOptions = {},
 ): PropertyDecorator {
-  return BooleanField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    BooleanField({ nullable: true, ...options }),
+  );
 }
 
 export function EmailField(
@@ -173,7 +185,10 @@ export function EmailField(
 export function EmailFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IStringFieldOptions = {},
 ): PropertyDecorator {
-  return EmailField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    EmailField({ nullable: true, ...options }),
+  );
 }
 
 export function UUIDField(
@@ -189,7 +204,10 @@ export function UUIDField(
 export function UUIDFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IFieldOptions = {},
 ): PropertyDecorator {
-  return UUIDField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    UUIDField({ nullable: true, ...options }),
+  );
 }
 
 export function URLField(
@@ -207,7 +225,10 @@ export function URLField(
 export function URLFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IStringFieldOptions = {},
 ): PropertyDecorator {
-  return URLField({ nullable: true, ...options });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    URLField({ nullable: true, ...options }),
+  );
 }
 
 export function DateField(
@@ -223,7 +244,10 @@ export function DateField(
 export function DateFieldOptional(
   options: Omit<FieldOptions, 'nullable'> & IFieldOptions = {},
 ): PropertyDecorator {
-  return DateField({ ...options, nullable: true });
+  return applyDecorators(
+    IsOptional({ each: options.each }),
+    DateField({ ...options, nullable: true }),
+  );
 }
 
 export function EnumField<TEnum extends object>(
