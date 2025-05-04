@@ -2,6 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""User register request"""
 input CreateUserInput {
   email: String!
   password: String!
@@ -30,17 +31,19 @@ type Query {
   getHello: String!
 }
 
+"""User update request"""
 input UpdateUserInput {
+  bio: String
   email: String
-  id: Float!
-  password: String
+  image: String
   username: String
 }
 
 type User {
-  bio: String!
-  email: String!
-  image: String!
-  token: String!
-  username: String!
+  bio: String
+  email: String
+  id: Float
+  image: String
+  token: String
+  username: String
 }
