@@ -23,6 +23,9 @@ import {
 } from '@repo/nest-common';
 import { AppModule } from './app.module';
 import { AllConfigType } from './config/config.type';
+import { GlobalGqlExceptionFilter } from './filters/global-gql-exception.filter';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './modules/auth/auth.service';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter({
@@ -117,13 +120,9 @@ async function bootstrap() {
   });
   logger.log(`CORS Origin: ${corsOrigin.toString()}`);
 
-  // app.useGlobalGuards(new AuthGuard(reflector, app.get(AuthService)));
-  // app.useGlobalFilters(
-  //   new GlobalExceptionFilter(
-  //     app.get(HttpAdapterHost),
-  //     configService.getOrThrow('app.debug', { infer: true }),
-  //   ),
-  // );
+  app.useGlobalGuards(new AuthGuard(reflector, app.get(AuthService)));
+
+  app.useGlobalFilters(new GlobalGqlExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -135,12 +134,6 @@ async function bootstrap() {
       },
     }),
   );
-
-  // app.useGlobalInterceptors(
-  //   new ClassSerializerInterceptor(reflector, {
-  //     excludeExtraneousValues: true,
-  //   }),
-  // );
 
   await app.listen(
     configService.getOrThrow('app.port', { infer: true }) as number,

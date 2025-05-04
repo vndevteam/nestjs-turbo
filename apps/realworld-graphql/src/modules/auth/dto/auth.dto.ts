@@ -1,7 +1,7 @@
 import { InputType } from '@nestjs/graphql';
 import { EmailField, PasswordField } from '@repo/graphql';
 
-@InputType()
+@InputType({ description: 'Login input' })
 export class LoginInput {
   @EmailField({ description: 'Email address' })
   readonly email: string;

@@ -24,6 +24,7 @@ import { AllConfigType } from './config/config.type';
 import { ApiModule } from './modules/api.module';
 import authConfig from './modules/auth/config/auth.config';
 // import { TypeOrmConfigService } from './database/mysql-typeorm-config.service'; // Uncomment this line if you are using MySQL
+import { BaseContext } from '@apollo/server';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { appConfig } from '@repo/graphql';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
@@ -75,10 +76,13 @@ const i18nModule = I18nModule.forRootAsync({
 
 const graphqlModule = GraphQLModule.forRootAsync<ApolloDriverConfig>({
   driver: ApolloDriver,
-  useFactory: (configService: ConfigService<AllConfigType>) => {
-    const isLocal: boolean =
-      configService.get('app.nodeEnv', { infer: true }) === Environment.LOCAL;
+  useFactory: async (configService: ConfigService<AllConfigType>) => {
+    const env = configService.get('app.nodeEnv', { infer: true });
+    const isLocal: boolean = env === Environment.LOCAL;
     return {
+      nodeEnv: env,
+      debug: isLocal,
+      includeStacktraceInErrorResponses: isLocal,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       // graphiql: isLocal, // Uncomment this line if you want to use GraphiQL instead of the playground or the Apollo Sandbox
@@ -88,7 +92,8 @@ const graphqlModule = GraphQLModule.forRootAsync<ApolloDriverConfig>({
         ApolloServerPluginLandingPageLocalDefault({
           embed: isLocal ? true : undefined,
         }),
-      ],
+      ] as BaseContext[],
+      context: ({ req, res }) => ({ req, res }),
     };
   },
   inject: [ConfigService],
