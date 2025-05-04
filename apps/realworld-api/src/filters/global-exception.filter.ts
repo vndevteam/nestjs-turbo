@@ -45,13 +45,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof HttpException) {
       error = handleHttpException(exception);
     } else if (exception instanceof QueryFailedError) {
-      this.logger.error(error);
+      this.logger.error(exception);
       error = this.handleQueryFailedError(exception);
     } else if (exception instanceof EntityNotFoundError) {
       this.logger.debug(exception);
       error = this.handleEntityNotFoundError(exception);
     } else {
-      this.logger.error(error);
+      this.logger.error(exception);
       error = handleError(exception);
     }
 
