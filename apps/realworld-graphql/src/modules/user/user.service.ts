@@ -1,7 +1,7 @@
 import { ErrorCode } from '@/constants/error-code.constant';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ValidationException } from '@repo/api/exceptions/validation.exception';
+import { ValidationException } from '@repo/graphql';
 import { UserEntity } from '@repo/postgresql-typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../auth/auth.service';

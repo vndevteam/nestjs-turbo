@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { IS_AUTH_OPTIONAL, IS_PUBLIC } from '@repo/nest-common';
 import { type FastifyRequest } from 'fastify';
 import { AuthService } from 'src/modules/auth/auth.service';
@@ -29,7 +30,8 @@ export class AuthGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
-    const request = context.switchToHttp().getRequest();
+    const ctx = GqlExecutionContext.create(context);
+    const request = ctx.getContext().req as FastifyRequest;
     const accessToken = this.extractTokenFromHeader(request);
 
     if (isAuthOptional && !accessToken) {

@@ -3,40 +3,37 @@ import { ErrorCode } from '@/constants/error-code.constant';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import {
   type ArgumentsHost,
-  type ExceptionFilter,
+  Catch,
   HttpException,
   HttpStatus,
   Logger,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
+import { GqlExceptionFilter } from '@nestjs/graphql';
 import {
   ErrorDto,
+  GraphqlErrorCode,
   handleError,
   handleHttpException,
   handleUnprocessableEntityException,
   ValidationException,
-} from '@repo/api';
+} from '@repo/graphql';
+import { GraphQLError } from 'graphql';
 import { STATUS_CODES } from 'http';
 import { I18nContext } from 'nestjs-i18n';
 import { EntityNotFoundError, QueryFailedError } from 'typeorm';
 
-// TODO: Will update this filter to handle all exceptions for graphql
-// @Catch()
-export class GlobalExceptionFilter implements ExceptionFilter {
+@Catch()
+export class GlobalGqlExceptionFilter implements GqlExceptionFilter {
   private i18n: I18nContext<I18nTranslations>;
-  private readonly logger = new Logger(GlobalExceptionFilter.name);
+  private readonly logger = new Logger(GlobalGqlExceptionFilter.name);
 
-  constructor(
-    private readonly httpAdapterHost: HttpAdapterHost,
-    private readonly debug: boolean,
-  ) {}
-
-  catch(exception: any, host: ArgumentsHost): void {
-    const { httpAdapter } = this.httpAdapterHost;
-    const ctx = host.switchToHttp();
+  catch(exception: any, host: ArgumentsHost) {
     this.i18n = I18nContext.current<I18nTranslations>(host);
     let error: ErrorDto;
+
+    const createGraphQLError = (message: string, error: ErrorDto) =>
+      new GraphQLError(message, { extensions: { ...error } });
 
     if (exception instanceof UnprocessableEntityException) {
       error = handleUnprocessableEntityException(exception);
@@ -45,24 +42,17 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof HttpException) {
       error = handleHttpException(exception);
     } else if (exception instanceof QueryFailedError) {
-      this.logger.error(error);
+      this.logger.error(exception);
       error = this.handleQueryFailedError(exception);
     } else if (exception instanceof EntityNotFoundError) {
       this.logger.debug(exception);
       error = this.handleEntityNotFoundError(exception);
     } else {
-      this.logger.error(error);
+      this.logger.error(exception);
       error = handleError(exception);
     }
 
-    if (this.debug) {
-      error.stack = exception.stack;
-      error.trace = exception;
-
-      this.logger.debug(error);
-    }
-
-    httpAdapter.reply(ctx.getResponse(), error, error.statusCode);
+    return createGraphQLError(exception.message, error);
   }
 
   /**
@@ -83,6 +73,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       error: STATUS_CODES[statusCode],
       errorCode:
         Object.keys(ErrorCode)[Object.values(ErrorCode).indexOf(r.errorCode)],
+      code: GraphqlErrorCode.FAILED_PRECONDITION,
       message:
         r.message ||
         this.i18n.t(r.errorCode as unknown as keyof I18nTranslations),
@@ -116,6 +107,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       statusCode: status,
       error: STATUS_CODES[status],
+      code:
+        status === HttpStatus.CONFLICT
+          ? GraphqlErrorCode.CONFLICT
+          : GraphqlErrorCode.INTERNAL_SERVER_ERROR,
       message,
     } as unknown as ErrorDto;
 
@@ -133,6 +128,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       statusCode: status,
       error: STATUS_CODES[status],
+      code: GraphqlErrorCode.NOT_FOUND,
       message: error.message,
     } as unknown as ErrorDto;
 

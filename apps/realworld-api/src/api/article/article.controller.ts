@@ -10,8 +10,8 @@ import {
   SerializeOptions,
 } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from '@repo/api';
 import { ApiAuth } from '@repo/api/decorators/http.decorators';
-import { CurrentUser } from '@repo/nest-common';
 import { ArticleService } from './article.service';
 import { ArticleFeedReqDto } from './dto/article-feed.dto';
 import { ArticleListReqDto, ArticleListResDto } from './dto/article-list.dto';
