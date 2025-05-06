@@ -21,14 +21,39 @@ input LoginInput {
 type Mutation {
   createUser(user: CreateUserInput!): User!
 
+  """Follow User"""
+  followUser(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
+
   """Sign in"""
   login(loginInput: LoginInput!): User!
+
+  """Unfollow User"""
+  unfollowUser(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
   updateUser(user: UpdateUserInput!): User!
+}
+
+type Profile {
+  bio: String!
+  following: Boolean!
+  image: String!
+  username: String!
 }
 
 type Query {
   currentUser: User!
   getHello: String!
+
+  """Get Profile"""
+  getProfile(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
   listTags: TagList!
 }
 

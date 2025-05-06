@@ -54,13 +54,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Token {{token}}",
-                "type": "text"
-              }
-            ],
+            "header": [],
             "body": {
               "mode": "graphql",
               "graphql": {
@@ -335,7 +329,272 @@
     },
     {
       "name": "Profiles",
-      "item": []
+      "item": [
+        {
+          "name": "Register Celeb",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has the required fields - email, token, username, bio, and image\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data.createUser.email).to.exist;",
+                  "  pm.expect(responseData.data.createUser.token).to.exist;",
+                  "  pm.expect(responseData.data.createUser.username).to.exist;",
+                  "  pm.expect(responseData.data.createUser.bio).to.exist;",
+                  "  pm.expect(responseData.data.createUser.image).to.exist;",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Email is in a valid format\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.createUser.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Token is a non-empty string\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.createUser.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation CreateUser($user: CreateUserInput!) {\n  createUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"user\": {\n        \"email\": \"celeb_{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"celeb_{{USERNAME}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is less than 200ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Data object has the correct structure\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.getProfile).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.getProfile.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.getProfile.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.getProfile.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.getProfile.following).to.exist.and.to.be.a('boolean');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Username is a non-empty string\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.getProfile.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetProfile($username: String!) {\n  getProfile(username: $username) {\n    username\n    image\n    bio\n    following\n  }\n}",
+                "variables": "{\n  \"username\": \"celeb_{{USERNAME}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Follow Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Content-Type header is application/json\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(300);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Data object schema is valid\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+                  "  const data = responseData.data;",
+                  "  ",
+                  "  pm.expect(data.followUser.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(data.followUser.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(data.followUser.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(data.followUser.following).to.exist.and.to.be.a('boolean');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Username is non-empty string\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.followUser.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation FollowUser($username: String!) {\n  followUser(username: $username) {\n    username\n    image\n    bio\n    following\n  }\n}",
+                "variables": "{\n  \"username\": \"celeb_{{USERNAME}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unfollow Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is less than 200ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Content-Type header is application/json\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the data object - username, image, bio, and following properties\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData).to.be.an('object');",
+                  "  pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.unfollowUser.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfollowUser.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfollowUser.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfollowUser.following).to.exist.and.to.be.a('boolean');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UnfollowUser($username: String!) {\n  unfollowUser(username: $username) {\n    username\n    image\n    bio\n    following\n  }\n}",
+                "variables": "{\n  \"username\": \"celeb_{{USERNAME}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Tags",
