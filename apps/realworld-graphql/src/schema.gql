@@ -29,6 +29,12 @@ type Mutation {
 type Query {
   currentUser: User!
   getHello: String!
+  listTags: TagList!
+}
+
+type TagList {
+  """List of tags"""
+  tags: [String!]!
 }
 
 """User update request"""
