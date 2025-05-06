@@ -339,7 +339,63 @@
     },
     {
       "name": "Tags",
-      "item": []
+      "item": [
+        {
+          "name": "Tags",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.expect(pm.response.code).to.equal(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Content type is application/json\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Data object and listTags array structure validation\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData).to.be.an('object');",
+                  "    pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+                  "    pm.expect(responseData.data.listTags).to.exist.and.to.be.an('object');",
+                  "    pm.expect(responseData.data.listTags.tags).to.exist.and.to.be.an('array');",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query ListTags {\n  listTags {\n    tags\n  }\n}\n",
+                "variables": "{\n    \"user\": {\n        \"email\":\"{{EMAIL}}\"\n    }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ]
 }
