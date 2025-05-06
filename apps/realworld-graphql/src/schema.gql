@@ -22,13 +22,19 @@ type Mutation {
   createUser(user: CreateUserInput!): User!
 
   """Follow User"""
-  followUser(username: String!): Profile!
+  followUser(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
 
   """Sign in"""
   login(loginInput: LoginInput!): User!
 
   """Unfollow User"""
-  unfollowUser(username: String!): Profile!
+  unfollowUser(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
   updateUser(user: UpdateUserInput!): User!
 }
 
@@ -44,7 +50,10 @@ type Query {
   getHello: String!
 
   """Get Profile"""
-  getProfile(username: String!): Profile!
+  getProfile(
+    """Username of the profile"""
+    username: String!
+  ): Profile!
   listTags: TagList!
 }
 

@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '@repo/graphql';
+import { UsernameArgs } from './dto/profile.dto';
 import { Profile } from './model/profile.model';
 import { ProfileService } from './profile.service';
 
@@ -13,9 +14,9 @@ export class ProfileResolver {
   })
   getProfile(
     @CurrentUser('id') userId: number,
-    @Args('username') username: string,
+    @Args() args: UsernameArgs,
   ): Promise<Profile> {
-    return this.profileService.getProfile(userId, username);
+    return this.profileService.getProfile(userId, args.username);
   }
 
   @Mutation(() => Profile, {
@@ -24,9 +25,9 @@ export class ProfileResolver {
   })
   follow(
     @CurrentUser('id') userId: number,
-    @Args('username') username: string,
+    @Args() args: UsernameArgs,
   ): Promise<Profile> {
-    return this.profileService.follow(userId, username);
+    return this.profileService.follow(userId, args.username);
   }
 
   @Mutation(() => Profile, {
@@ -35,8 +36,8 @@ export class ProfileResolver {
   })
   unfollow(
     @CurrentUser('id') userId: number,
-    @Args('username') username: string,
+    @Args() args: UsernameArgs,
   ): Promise<Profile> {
-    return this.profileService.unfollow(userId, username);
+    return this.profileService.unfollow(userId, args.username);
   }
 }
