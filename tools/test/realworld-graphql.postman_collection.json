@@ -325,7 +325,99 @@
     },
     {
       "name": "Articles, Favorite, Comments",
-      "item": []
+      "item": [
+        {
+          "name": "Single Article by slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the article object\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.article).to.be.an('object');",
+                  "  pm.expect(responseData.data.article.slug).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.title).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.description).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.body).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.tagList).to.exist.and.to.be.an('array');",
+                  "  pm.expect(responseData.data.article.createdAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.updatedAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.author).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.article.author.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.author.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.article.author.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.author.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.article.favorited).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.article.favoritesCount).to.exist.and.to.be.a('number');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Check that 'slug,' 'title,' 'description,' 'body,' 'tagList,' 'createdAt,' 'updatedAt' are non-empty strings or arrays\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    pm.expect(responseData.data.article).to.be.an('object');",
+                  "    pm.expect(responseData.data.article.slug).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.body).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.tagList).to.be.an('array').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.createdAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.article.updatedAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Verify that 'author' object contains 'bio,' 'following,' 'image,' 'username' fields\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.article.author).to.be.an('object');",
+                  "    pm.expect(responseData.data.article.author).to.include.all.keys('bio', 'following', 'image', 'username');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Article($slug: String!) {\n  article(slug: $slug) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    },\n    favorited\n    favoritesCount\n  }\n}",
+                "variables": "{\n  \"slug\": \"{{slug}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Profiles",

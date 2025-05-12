@@ -162,9 +162,6 @@ export class ArticleService {
     return {
       article: {
         ...toArticleDto(article, user),
-        tagList: article.tags.map((tag) => tag.name),
-        favorited: article.favoritedBy.some((user) => user.id === userId),
-        favoritesCount: article.favoritedBy.length,
       },
     };
   }

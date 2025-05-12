@@ -1,0 +1,153 @@
+# Dependencies
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+composer.lock
+Gemfile.lock
+bun.lockb
+*.lock
+*.lockb
+node_modules/
+.pnp/
+.pnp.js
+.yarn/
+.yarn-cache/
+
+# Environment
+.env*
+!.env.example
+
+# Version Control
+.git/
+.svn/
+.hg/
+.bzr/
+
+# Build and Output
+dist/
+build/
+out/
+.next/
+.nuxt/
+.turbo/
+coverage/
+.nyc_output/
+
+# IDE and Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing
+.jest/
+
+# Cache
+.cache/
+.sass-cache/
+.eslintcache/
+.parcel-cache/
+.cache-loader/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.ipynb_checkpoints/
+.history/
+
+# Binary files
+*.bin
+*.exe
+*.dll
+*.so
+*.pak
+
+# Media files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tif
+*.mp3
+*.wav
+*.wma
+*.ogg
+*.flac
+*.aac
+*.mp4
+*.mov
+*.wmv
+*.flv
+*.avi
+
+# Archive files
+*.zip
+*.tar
+*.gz
+*.7z
+*.rar
+*.tgz
+*.dmg
+*.iso
+*.tar.gz
+*.tar.xz
+*.tar.bz2
+*.tar.lzma
+*.tar.Z
+*.tar.sz
+*.lzma
+
+# Font files
+*.ttf
+*.otf
+*.woff
+*.woff2
+*.eot
+*.qwoff
+
+# Document files
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.odt
+*.ods
+*.odp
+*.odg
+*.odf
+*.sxw
+*.sxc
+*.sxi
+*.sxd
+*.sdc
+*.csv
+
+# Other
+*.bak
+*.tmp
+*.vsix
+*.rmeta
+*.rlib
+*.parquet
+*.svg
+.egg-info/
+.venv/
+__pycache__/
+.lock-wscript/
+.Python/
+.jupyter/
+.node_repl_history/

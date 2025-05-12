@@ -2,12 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Article {
+  author: Profile
+  body: String!
+  createdAt: DateTime
+  description: String!
+  favorited: Boolean
+  favoritesCount: Float
+  slug: String!
+  tagList: [String!]!
+  title: String!
+  updatedAt: DateTime
+}
+
 """User register request"""
 input CreateUserInput {
   email: String!
   password: String!
   username: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 """Login input"""
 input LoginInput {
@@ -46,6 +64,11 @@ type Profile {
 }
 
 type Query {
+  """Get an article by slug"""
+  article(
+    """Slug of the article"""
+    slug: String!
+  ): Article!
   currentUser: User!
   getHello: String!
 
