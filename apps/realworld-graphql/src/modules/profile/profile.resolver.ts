@@ -10,7 +10,7 @@ export class ProfileResolver {
 
   @Query(() => Profile, {
     description: 'Get Profile',
-    name: 'getProfile',
+    name: 'profile',
   })
   getProfile(
     @CurrentUser('id') userId: number,

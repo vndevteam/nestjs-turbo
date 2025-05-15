@@ -20,7 +20,10 @@ export class UserResolver {
     private readonly authService: AuthService,
   ) {}
 
-  @Query(() => User)
+  @Query(() => User, {
+    name: 'currentUser',
+    description: 'Get current user (from token)',
+  })
   async currentUser(
     @CurrentUser() user: { id: number; token: string },
   ): Promise<User> {
@@ -28,17 +31,23 @@ export class UserResolver {
   }
 
   @Public()
-  @Mutation(() => User)
-  async createUser(@Args('user') userInput: CreateUserInput): Promise<User> {
-    return await this.userService.create(userInput);
+  @Mutation(() => User, {
+    name: 'createUser',
+    description: 'Register new user',
+  })
+  async createUser(@Args('input') input: CreateUserInput): Promise<User> {
+    return await this.userService.create(input);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, {
+    name: 'updateUser',
+    description: 'Update current user',
+  })
   async updateUser(
     @CurrentUser('id') userId: number,
-    @Args('user') userInput: UpdateUserInput,
+    @Args('input') input: UpdateUserInput,
   ): Promise<User> {
-    return await this.userService.update(userId, userInput);
+    return await this.userService.update(userId, input);
   }
 
   @ResolveField()

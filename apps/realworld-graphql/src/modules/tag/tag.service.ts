@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagEntity } from '@repo/postgresql-typeorm';
 import { Repository } from 'typeorm';
-import { TagList } from './model/tag.model';
 
 @Injectable()
 export class TagService {
@@ -11,10 +10,10 @@ export class TagService {
     private readonly tagRepository: Repository<TagEntity>,
   ) {}
 
-  async list(): Promise<TagList> {
+  async list(): Promise<string[]> {
     const tagEntities = await this.tagRepository.find();
     const tags = tagEntities.map((tag) => tag.name);
 
-    return { tags };
+    return tags;
   }
 }

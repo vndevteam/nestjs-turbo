@@ -58,8 +58,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation CreateUser($user: CreateUserInput!) {\n  createUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
-                "variables": "{\n    \"user\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"{{USERNAME}}\"\n    }\n}"
+                "query": "mutation CreateUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"input\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"{{USERNAME}}\"\n    }\n}"
               }
             },
             "url": {
@@ -117,8 +117,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation Login($loginInput: LoginInput!) {\n    login(loginInput: $loginInput) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
-                "variables": "{\n    \"loginInput\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
+                "query": "mutation Login($input: LoginInput!) {\n    login(input: $input) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
+                "variables": "{\n    \"input\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
               }
             },
             "url": {
@@ -183,8 +183,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation Login($loginInput: LoginInput!) {\n    login(loginInput: $loginInput) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
-                "variables": "{\n    \"loginInput\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
+                "query": "mutation Login($input: LoginInput!) {\n    login(input: $input) {\n        email\n        token\n        username\n        bio\n        image\n    }\n}\n",
+                "variables": "{\n    \"input\": {\n        \"email\": \"{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\"\n    }\n}"
               }
             },
             "url": {
@@ -306,8 +306,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation UpdateUser($user: UpdateUserInput!) {\n  updateUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
-                "variables": "{\n    \"user\": {\n        \"email\":\"{{EMAIL}}\"\n    }\n}"
+                "query": "mutation UpdateUser($input: UpdateUserInput!) {\n  updateUser(input: $input) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"input\": {\n        \"email\":\"{{EMAIL}}\"\n    }\n}"
               }
             },
             "url": {
@@ -326,6 +326,97 @@
     {
       "name": "Articles, Favorite, Comments",
       "item": [
+        {
+          "name": "Create Article",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is less than 300ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(300);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the 'createArticle' object in the response\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.createArticle).to.be.an('object');",
+                  "  pm.expect(responseData.data.createArticle.slug).to.exist.and.to.be.a('string');",
+                  "  pm.globals.set('slug', responseData.data.createArticle.slug);",
+                  "  pm.expect(responseData.data.createArticle.title).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.description).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.body).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.tagList).to.exist.and.to.be.an('array');",
+                  "  pm.expect(responseData.data.createArticle.createdAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.createdAt).to.match(/^\\d{4,}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+(?:[+-][0-2]\\d:[0-5]\\d|Z)$/);",
+                  "  pm.expect(responseData.data.createArticle.updatedAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.updatedAt).to.match(/^\\d{4,}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+(?:[+-][0-2]\\d:[0-5]\\d|Z)$/);",
+                  "  pm.expect(responseData.data.createArticle.author).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.createArticle.author.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.author.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.createArticle.author.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.author.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.createArticle.favorited).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.createArticle.favoritesCount).to.exist.and.to.be.a('number');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Check that the necessary fields are present in the createArticle object\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData).to.be.an('object');",
+                  "    pm.expect(responseData.data.createArticle).to.include.all.keys('slug', 'title', 'description', 'body', 'tagList', 'createdAt', 'updatedAt', 'author', 'favorited', 'favoritesCount');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Verify that the author object contains the fields bio, following, image, and username\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.createArticle.author).to.exist;",
+                  "    pm.expect(responseData.data.createArticle.author.bio).to.exist;",
+                  "    pm.expect(responseData.data.createArticle.author.following).to.exist;",
+                  "    pm.expect(responseData.data.createArticle.author.image).to.exist;",
+                  "    pm.expect(responseData.data.createArticle.author.username).to.exist;",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation CreateArticle($input: CreateArticleInput!) {\n  createArticle(input: $input) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    },\n    favorited\n    favoritesCount\n  }\n}\n",
+                "variables": "{\n  \"input\": {\n    \"title\": \"How to train your dragon\",\n    \"description\": \"Ever wonder how?\",\n    \"body\": \"Very carefully.\",\n    \"tagList\": [\"training\", \"dragons\"]\n  }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
         {
           "name": "Single Article by slug",
           "event": [
@@ -470,8 +561,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation CreateUser($user: CreateUserInput!) {\n  createUser(user: $user) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
-                "variables": "{\n    \"user\": {\n        \"email\": \"celeb_{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"celeb_{{USERNAME}}\"\n    }\n}"
+                "query": "mutation CreateUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    email\n    token\n    username\n    bio\n    image\n  }\n}\n",
+                "variables": "{\n    \"input\": {\n        \"email\": \"celeb_{{EMAIL}}\",\n        \"password\": \"{{PASSWORD}}\",\n        \"username\": \"celeb_{{USERNAME}}\"\n    }\n}"
               }
             },
             "url": {
@@ -502,18 +593,18 @@
                   "  const responseData = pm.response.json();",
                   "  ",
                   "  pm.expect(responseData.data).to.exist.and.to.be.an('object');",
-                  "  pm.expect(responseData.data.getProfile).to.exist.and.to.be.an('object');",
-                  "  pm.expect(responseData.data.getProfile.username).to.exist.and.to.be.a('string');",
-                  "  pm.expect(responseData.data.getProfile.image).to.exist.and.to.be.a('string');",
-                  "  pm.expect(responseData.data.getProfile.bio).to.exist.and.to.be.a('string');",
-                  "  pm.expect(responseData.data.getProfile.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.profile).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.profile.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.profile.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.profile.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.profile.following).to.exist.and.to.be.a('boolean');",
                   "});",
                   "",
                   "",
                   "pm.test(\"Username is a non-empty string\", function () {",
                   "    const responseData = pm.response.json();",
                   "    ",
-                  "    pm.expect(responseData.data.getProfile.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
+                  "    pm.expect(responseData.data.profile.username).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Username should not be empty\");",
                   "});",
                   ""
                 ],
@@ -537,7 +628,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query GetProfile($username: String!) {\n  getProfile(username: $username) {\n    username\n    image\n    bio\n    following\n  }\n}",
+                "query": "query GetProfile($username: String!) {\n  profile(username: $username) {\n    username\n    image\n    bio\n    following\n  }\n}",
                 "variables": "{\n  \"username\": \"celeb_{{USERNAME}}\"\n}"
               }
             },
@@ -713,13 +804,12 @@
                   "});",
                   "",
                   "",
-                  "pm.test(\"Data object and listTags array structure validation\", function () {",
+                  "pm.test(\"Data object and tags array structure validation\", function () {",
                   "    const responseData = pm.response.json();",
                   "    ",
                   "    pm.expect(responseData).to.be.an('object');",
                   "    pm.expect(responseData.data).to.exist.and.to.be.an('object');",
-                  "    pm.expect(responseData.data.listTags).to.exist.and.to.be.an('object');",
-                  "    pm.expect(responseData.data.listTags.tags).to.exist.and.to.be.an('array');",
+                  "    pm.expect(responseData.data.tags).to.exist.and.to.be.an('array');",
                   "});",
                   "",
                   ""
@@ -735,8 +825,8 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query ListTags {\n  listTags {\n    tags\n  }\n}\n",
-                "variables": "{\n    \"user\": {\n        \"email\":\"{{EMAIL}}\"\n    }\n}"
+                "query": "query ListTags {\n  tags\n}\n",
+                "variables": ""
               }
             },
             "url": {

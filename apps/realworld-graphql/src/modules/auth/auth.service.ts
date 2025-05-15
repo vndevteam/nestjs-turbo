@@ -19,8 +19,8 @@ export class AuthService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async login(loginInput: LoginInput): Promise<User> {
-    const { email, password } = loginInput;
+  async login(input: LoginInput): Promise<User> {
+    const { email, password } = input;
 
     const user = await this.userRepository.findOne({
       where: { email },

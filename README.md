@@ -13,6 +13,11 @@
   <a href="https://eslint.org/" target="blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/ESLint_logo.svg" width="88" alt="ESLint logo" /></a>
 </p>
 
+---
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/vndevteam/nestjs-turbo)
+[![CI](https://github.com/vndevteam/nestjs-turbo/actions/workflows/ci.yml/badge.svg)](https://github.com/vndevteam/nestjs-turbo/actions/workflows/ci.yml)
+
 ## Introduction
 
 This is a monorepo built with [Turborepo](https://turbo.build/repo) and [NestJS](https://nestjs.com/). The project includes multiple applications and shared libraries, all managed in a single repository.

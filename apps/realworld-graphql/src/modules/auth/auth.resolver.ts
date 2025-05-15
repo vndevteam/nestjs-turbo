@@ -10,7 +10,7 @@ export class AuthResolver {
 
   @Public()
   @Mutation(() => User, { name: 'login', description: 'Sign in' })
-  async login(@Args('loginInput') loginInput: LoginInput): Promise<User> {
-    return this.authService.login(loginInput);
+  async login(@Args('input') input: LoginInput): Promise<User> {
+    return this.authService.login(input);
   }
 }

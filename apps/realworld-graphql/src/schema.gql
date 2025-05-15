@@ -15,6 +15,20 @@ type Article {
   updatedAt: DateTime
 }
 
+input CreateArticleInput {
+  """Body of the article"""
+  body: String!
+
+  """Description of the article"""
+  description: String!
+
+  """Tag list of the article"""
+  tagList: [String!]
+
+  """Title of the article"""
+  title: String!
+}
+
 """User register request"""
 input CreateUserInput {
   email: String!
@@ -37,7 +51,10 @@ input LoginInput {
 }
 
 type Mutation {
-  createUser(user: CreateUserInput!): User!
+  createArticle(input: CreateArticleInput!): Article!
+
+  """Register new user"""
+  createUser(input: CreateUserInput!): User!
 
   """Follow User"""
   followUser(
@@ -46,14 +63,16 @@ type Mutation {
   ): Profile!
 
   """Sign in"""
-  login(loginInput: LoginInput!): User!
+  login(input: LoginInput!): User!
 
   """Unfollow User"""
   unfollowUser(
     """Username of the profile"""
     username: String!
   ): Profile!
-  updateUser(user: UpdateUserInput!): User!
+
+  """Update current user"""
+  updateUser(input: UpdateUserInput!): User!
 }
 
 type Profile {
@@ -69,19 +88,16 @@ type Query {
     """Slug of the article"""
     slug: String!
   ): Article!
+
+  """Get current user (from token)"""
   currentUser: User!
-  getHello: String!
+  hello: String!
 
   """Get Profile"""
-  getProfile(
+  profile(
     """Username of the profile"""
     username: String!
   ): Profile!
-  listTags: TagList!
-}
-
-type TagList {
-  """List of tags"""
   tags: [String!]!
 }
 

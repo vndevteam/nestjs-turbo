@@ -25,8 +25,8 @@ export class UserService {
     return { ...user, token: currentUser.token };
   }
 
-  async create(dto: CreateUserInput): Promise<User> {
-    const { username, email, password } = dto;
+  async create(input: CreateUserInput): Promise<User> {
+    const { username, email, password } = input;
 
     const user = await this.userRepository.findOne({
       where: [{ username }, { email }],
@@ -42,7 +42,7 @@ export class UserService {
     return savedUser;
   }
 
-  async update(userId: number, dto: UpdateUserInput) {
+  async update(userId: number, input: UpdateUserInput) {
     const user = await this.userRepository.findOneBy({ id: userId });
 
     if (!user) {
@@ -51,7 +51,7 @@ export class UserService {
 
     const savedUser = await this.userRepository.save({
       id: userId,
-      ...dto,
+      ...input,
     });
 
     return {

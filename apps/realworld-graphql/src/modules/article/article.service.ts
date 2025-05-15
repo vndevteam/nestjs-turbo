@@ -3,8 +3,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity, TagEntity, UserEntity } from '@repo/postgresql-typeorm';
 import { I18nService } from 'nestjs-i18n';
-import { Repository } from 'typeorm';
+import slugify from 'slugify';
+import { In, Repository } from 'typeorm';
 import { Profile } from '../profile/model/profile.model';
+import { CreateArticleInput } from './dto/article.dto';
 import { Article } from './model/article.model';
 
 @Injectable()
@@ -64,5 +66,105 @@ export class ArticleService {
         article?.favoritedBy?.some((fUser) => fUser.id === userId) || false,
       favoritesCount: article?.favoritedBy?.length || 0,
     };
+  }
+
+  async create(
+    userId: number,
+    input: CreateArticleInput,
+    shouldEagerLoad: boolean,
+  ): Promise<Article> {
+    const { title, description, body, tagList } = input;
+    const slug = await this.validateAndCreateSlug(title);
+    const { existingTags, newTags } = await this.prepareTags(tagList);
+
+    let savedArticle: ArticleEntity;
+    await this.articleRepository.manager.transaction(async (manager) => {
+      // Save new tags
+      const savedNewTags = await manager.save(newTags);
+      const allTags = [...existingTags, ...savedNewTags];
+
+      // Save article
+      const newArticle = new ArticleEntity({
+        title,
+        slug,
+        description,
+        body,
+        authorId: userId,
+        tags: allTags,
+      });
+      savedArticle = await manager.save(newArticle);
+    });
+
+    let article: ArticleEntity;
+    if (shouldEagerLoad) {
+      article = await this.articleRepository.findOne({
+        where: { id: savedArticle.id },
+        relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+      });
+    } else {
+      article = await this.articleRepository.findOne({
+        where: { id: savedArticle.id },
+        relations: ['tags'],
+      });
+    }
+
+    return {
+      ...article.toDto(Article),
+      tagList: article?.tags?.map((tag) => tag.name).reverse() || [],
+      ...(shouldEagerLoad && {
+        author: {
+          username: article.author.username,
+          bio: article.author.bio,
+          image: article.author.image,
+          following: article.author.following.some(
+            (follow) => follow.followeeId === userId,
+          ),
+        },
+        favorited: article.favoritedBy.some((user) => user.id === userId),
+        favoritesCount: article.favoritedBy.length,
+      }),
+    };
+  }
+
+  private async validateAndCreateSlug(title: string) {
+    const slug = this.generateSlug(title);
+
+    const existingArticle = await this.articleRepository.findOne({
+      where: { slug },
+    });
+
+    if (existingArticle) {
+      return `${slug}-${Date.now()}`;
+    }
+
+    return slug;
+  }
+
+  private generateSlug(title: string) {
+    return slugify(title, {
+      lower: true,
+      strict: true,
+    });
+  }
+
+  private async prepareTags(tagList: string[] = []) {
+    if (!tagList || tagList.length === 0) {
+      return { existingTags: [], newTags: [] };
+    }
+
+    const existingTags = await this.tagRepository.find({
+      where: { name: In(tagList) },
+    });
+
+    const existingTagNames = existingTags.map((tag) => tag.name);
+
+    const newTagNames = tagList.filter(
+      (tag) => !existingTagNames.includes(tag),
+    );
+    const newTags = this.tagRepository.create(
+      newTagNames.map((name) => ({ name })),
+    );
+
+    return { existingTags, newTags };
   }
 }
