@@ -19,7 +19,7 @@
     "@types/eslint": "^9.6.1",
     "@vercel/style-guide": "^6.0.0",
     "eslint": "^9.25.1",
-    "eslint-config-next": "15.3.1",
+    "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.2",
     "eslint-config-turbo": "^2.5.2",
     "eslint-plugin-prettier": "^5.2.6",
