@@ -196,6 +196,15 @@ export class ArticleService {
     };
   }
 
+  async delete(slug: string) {
+    const result = await this.articleRepository.delete({ slug: slug });
+    if (result.affected === 0) {
+      throw new NotFoundException(this.i18n.t(ErrorCode.E201));
+    }
+
+    return true;
+  }
+
   private async validateAndCreateSlug(title: string) {
     const slug = this.generateSlug(title);
 

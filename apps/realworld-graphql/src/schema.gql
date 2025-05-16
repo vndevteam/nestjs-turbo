@@ -55,6 +55,7 @@ type Mutation {
 
   """Register new user"""
   createUser(input: CreateUserInput!): User!
+  deleteArticle(slug: String!): Boolean!
 
   """Follow User"""
   followUser(

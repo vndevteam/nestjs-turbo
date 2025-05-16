@@ -597,6 +597,44 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Delete Article",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "http2"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation DeleteArticle($slug: String!) {\n  deleteArticle(slug: $slug)\n}",
+                "variables": "{\n  \"slug\": \"{{slug}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
         }
       ]
     },

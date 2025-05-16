@@ -84,6 +84,11 @@ export class ArticleResolver {
     );
   }
 
+  @Mutation(() => Boolean, { name: 'deleteArticle' })
+  async delete(@Args('slug') slug: string) {
+    return await this.articleService.delete(slug);
+  }
+
   @ResolveField(() => Profile)
   async author(@Parent() article: Article): Promise<Profile> {
     if (article.author) return article.author;
