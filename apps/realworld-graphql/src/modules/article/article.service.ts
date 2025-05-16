@@ -6,7 +6,7 @@ import { I18nService } from 'nestjs-i18n';
 import slugify from 'slugify';
 import { In, Repository } from 'typeorm';
 import { Profile } from '../profile/model/profile.model';
-import { CreateArticleInput } from './dto/article.dto';
+import { CreateArticleInput, UpdateArticleInput } from './dto/article.dto';
 import { Article } from './model/article.model';
 
 @Injectable()
@@ -122,6 +122,76 @@ export class ArticleService {
         },
         favorited: article.favoritedBy.some((user) => user.id === userId),
         favoritesCount: article.favoritedBy.length,
+      }),
+    };
+  }
+
+  async update(
+    userId: number,
+    reqSlug: string,
+    input: UpdateArticleInput,
+    shouldEagerLoad: boolean,
+  ): Promise<Article> {
+    const article = await this.articleRepository.findOne({
+      where: { slug: reqSlug },
+    });
+
+    if (!article) {
+      throw new NotFoundException(this.i18n.t(ErrorCode.E201));
+    }
+
+    const { title, description, body, tagList = [] } = input;
+    const newSlug =
+      title && reqSlug !== this.generateSlug(title)
+        ? await this.validateAndCreateSlug(title)
+        : reqSlug;
+    const { existingTags, newTags } = await this.prepareTags(tagList);
+
+    let savedArticle: ArticleEntity;
+    await this.articleRepository.manager.transaction(async (manager) => {
+      // Save new tags
+      const savedNewTags = await manager.save(newTags);
+      const allTags = [...existingTags, ...savedNewTags];
+
+      // Save article
+      const updatedArticle = Object.assign(article, {
+        title,
+        slug: newSlug,
+        description,
+        body,
+        tags: allTags,
+      });
+
+      savedArticle = await manager.save(updatedArticle);
+    });
+
+    let newArticle: ArticleEntity;
+    if (shouldEagerLoad) {
+      newArticle = await this.articleRepository.findOne({
+        where: { id: savedArticle.id },
+        relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+      });
+    } else {
+      newArticle = await this.articleRepository.findOne({
+        where: { id: savedArticle.id },
+        relations: ['tags'],
+      });
+    }
+
+    return {
+      ...newArticle.toDto(Article),
+      tagList: newArticle?.tags?.map((tag) => tag.name).reverse() || [],
+      ...(shouldEagerLoad && {
+        author: {
+          username: newArticle.author.username,
+          bio: newArticle.author.bio,
+          image: newArticle.author.image,
+          following: newArticle.author.following.some(
+            (follow) => follow.followeeId === userId,
+          ),
+        },
+        favorited: newArticle.favoritedBy.some((user) => user.id === userId),
+        favoritesCount: newArticle.favoritedBy.length,
       }),
     };
   }

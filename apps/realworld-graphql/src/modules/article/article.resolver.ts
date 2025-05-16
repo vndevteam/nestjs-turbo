@@ -12,7 +12,11 @@ import type { GraphQLResolveInfo } from 'graphql';
 import { Profile } from '../profile/model/profile.model';
 import { ArticleDataLoader } from './article.loader';
 import { ArticleService } from './article.service';
-import { CreateArticleInput, SlugArgs } from './dto/article.dto';
+import {
+  CreateArticleInput,
+  SlugArgs,
+  UpdateArticleInput,
+} from './dto/article.dto';
 import { Article } from './model/article.model';
 
 @Resolver(() => Article)
@@ -57,6 +61,27 @@ export class ArticleResolver {
     );
 
     return await this.articleService.create(userId, input, shouldEagerLoad);
+  }
+
+  @Mutation(() => Article, { name: 'updateArticle' })
+  async update(
+    @CurrentUser('id') userId: number,
+    @Args('slug') slug: string,
+    @Args('input') input: UpdateArticleInput,
+    @Info() info: GraphQLResolveInfo,
+  ): Promise<Article> {
+    const requestedFields = getFieldNames(info);
+
+    const shouldEagerLoad = ['author', 'favorited', 'favoritesCount'].every(
+      (field) => requestedFields.includes(field),
+    );
+
+    return await this.articleService.update(
+      userId,
+      slug,
+      input,
+      shouldEagerLoad,
+    );
   }
 
   @ResolveField(() => Profile)

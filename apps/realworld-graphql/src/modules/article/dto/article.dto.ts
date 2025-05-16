@@ -1,4 +1,4 @@
-import { ArgsType, InputType } from '@nestjs/graphql';
+import { ArgsType, InputType, PartialType } from '@nestjs/graphql';
 import { StringField, StringFieldOptional } from '@repo/graphql';
 
 @ArgsType()
@@ -32,3 +32,6 @@ export class CreateArticleInput {
   })
   tagList?: string[];
 }
+
+@InputType()
+export class UpdateArticleInput extends PartialType(CreateArticleInput) {}

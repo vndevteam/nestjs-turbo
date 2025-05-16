@@ -384,6 +384,12 @@
                   "    pm.expect(responseData.data.createArticle.author.image).to.exist;",
                   "    pm.expect(responseData.data.createArticle.author.username).to.exist;",
                   "});",
+                  "",
+                  "pm.test('Check the presence of the \"createArticle\" field in the response body', function () {",
+                  "    const responseData = pm.response.json();",
+                  "    pm.expect(responseData.data.createArticle).to.exist;",
+                  "    console.log(responseData.data.createArticle);",
+                  "});",
                   ""
                 ],
                 "type": "text/javascript",
@@ -392,7 +398,7 @@
             }
           ],
           "protocolProfileBehavior": {
-            "protocolVersion": "auto"
+            "protocolVersion": "http2"
           },
           "request": {
             "method": "POST",
@@ -406,7 +412,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "mutation CreateArticle($input: CreateArticleInput!) {\n  createArticle(input: $input) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    },\n    favorited\n    favoritesCount\n  }\n}\n",
+                "query": "mutation CreateArticle($input: CreateArticleInput!) {\n  createArticle(input: $input) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    }\n    favorited\n    favoritesCount\n  }\n}\n",
                 "variables": "{\n  \"input\": {\n    \"title\": \"How to train your dragon\",\n    \"description\": \"Ever wonder how?\",\n    \"body\": \"Very carefully.\",\n    \"tagList\": [\"training\", \"dragons\"]\n  }\n}"
               }
             },
@@ -499,6 +505,102 @@
               "graphql": {
                 "query": "query Article($slug: String!) {\n  article(slug: $slug) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    },\n    favorited\n    favoritesCount\n  }\n}",
                 "variables": "{\n  \"slug\": \"{{slug}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Article",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is less than 300ms\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(300);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the 'updateArticle' object in the response\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.updateArticle).to.be.an('object');",
+                  "  pm.expect(responseData.data.updateArticle.slug).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.title).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.description).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.body).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.tagList).to.exist.and.to.be.an('array');",
+                  "  pm.expect(responseData.data.updateArticle.createdAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.createdAt).to.match(/^\\d{4,}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+(?:[+-][0-2]\\d:[0-5]\\d|Z)$/);",
+                  "  pm.expect(responseData.data.updateArticle.updatedAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.updatedAt).to.match(/^\\d{4,}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+(?:[+-][0-2]\\d:[0-5]\\d|Z)$/);",
+                  "  pm.expect(responseData.data.updateArticle.author).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.updateArticle.author.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.author.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.updateArticle.author.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.author.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.updateArticle.favorited).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.updateArticle.favoritesCount).to.exist.and.to.be.a('number');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Check that the necessary fields are present in the updateArticle object\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData).to.be.an('object');",
+                  "    pm.expect(responseData.data.updateArticle).to.include.all.keys('slug', 'title', 'description', 'body', 'tagList', 'createdAt', 'updatedAt', 'author', 'favorited', 'favoritesCount');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Verify that the author object contains the fields bio, following, image, and username\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.updateArticle.author).to.exist;",
+                  "    pm.expect(responseData.data.updateArticle.author.bio).to.exist;",
+                  "    pm.expect(responseData.data.updateArticle.author.following).to.exist;",
+                  "    pm.expect(responseData.data.updateArticle.author.image).to.exist;",
+                  "    pm.expect(responseData.data.updateArticle.author.username).to.exist;",
+                  "});",
+                  "",
+                  "pm.test('Check the presence of the \"updateArticle\" field in the response body', function () {",
+                  "    const responseData = pm.response.json();",
+                  "    pm.expect(responseData.data.updateArticle).to.exist;",
+                  "    console.log(responseData.data.updateArticle);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "http2"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UpdateArticle($slug: String!, $input: UpdateArticleInput!) {\n  updateArticle(slug: $slug, input: $input) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    }\n    favorited\n    favoritesCount\n  }\n}\n",
+                "variables": "{\n  \"slug\": \"{{slug}}\",\n  \"input\": {\n    \"title\": \"How to train your dragon\",\n    \"description\": \"Ever wonder how?\",\n    \"body\": \"With two hands\",\n    \"tagList\": [\"training\", \"dragons\"]\n  }\n}"
               }
             },
             "url": {

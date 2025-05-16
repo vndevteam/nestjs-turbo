@@ -70,6 +70,7 @@ type Mutation {
     """Username of the profile"""
     username: String!
   ): Profile!
+  updateArticle(input: UpdateArticleInput!, slug: String!): Article!
 
   """Update current user"""
   updateUser(input: UpdateUserInput!): User!
@@ -99,6 +100,20 @@ type Query {
     username: String!
   ): Profile!
   tags: [String!]!
+}
+
+input UpdateArticleInput {
+  """Body of the article"""
+  body: String
+
+  """Description of the article"""
+  description: String
+
+  """Tag list of the article"""
+  tagList: [String!]
+
+  """Title of the article"""
+  title: String
 }
 
 """User update request"""
