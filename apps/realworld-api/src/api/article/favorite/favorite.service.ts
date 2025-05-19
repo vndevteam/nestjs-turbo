@@ -48,12 +48,19 @@ export class FavoriteService {
       userId,
     );
 
-    // Remove the user from the list of favorited users
-    article.favoritedBy = article.favoritedBy.filter(
-      (favoritedBy) => favoritedBy.id !== user.id,
+    // Check if the user has already favorited the article
+    const hasFavorited = article.favoritedBy.some(
+      (favoritedBy) => favoritedBy.id === user.id,
     );
 
-    await this.articleRepository.save(article);
+    if (hasFavorited) {
+      // Remove the user from the list of favorited users
+      article.favoritedBy = article.favoritedBy.filter(
+        (favoritedBy) => favoritedBy.id !== user.id,
+      );
+
+      await this.articleRepository.save(article);
+    }
 
     return {
       article: {

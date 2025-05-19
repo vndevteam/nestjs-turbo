@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   Args,
   Info,
@@ -21,6 +22,7 @@ import { Article } from './model/article.model';
 
 @Resolver(() => Article)
 export class ArticleResolver {
+  private readonly logger = new Logger(ArticleResolver.name);
   constructor(
     private readonly articleService: ArticleService,
     private readonly dataLoader: ArticleDataLoader,
@@ -35,6 +37,7 @@ export class ArticleResolver {
     @Args() { slug }: SlugArgs,
     @Info() info: GraphQLResolveInfo,
   ): Promise<Article> {
+    this.logger.log('Getting article', slug);
     const requestedFields = getFieldNames(info);
 
     const shouldEagerLoad = ['author', 'favorited', 'favoritesCount'].every(
@@ -90,16 +93,19 @@ export class ArticleResolver {
   }
 
   @ResolveField(() => Profile)
-  async author(@Parent() article: Article): Promise<Profile> {
+  async author(
+    @CurrentUser('id') userId: number,
+    @Parent() article: Article,
+  ): Promise<Profile> {
     if (article.author) return article.author;
+    this.logger.log('Getting author for article', article.id);
     const author = await this.dataLoader
       .getAuthorLoader()
       .load(article.authorId);
     const profile = author.toDto(Profile);
     profile.following =
-      author?.following?.some(
-        (followee) => followee.followeeId === article?.author?.id,
-      ) || false;
+      author?.followers?.some((follower) => follower.followerId === userId) ||
+      false;
     return profile;
   }
 
@@ -109,6 +115,7 @@ export class ArticleResolver {
     @CurrentUser('id') userId: number,
   ) {
     if (article.favorited !== undefined) return article.favorited;
+    this.logger.log('Getting favorited for article', article.id);
     const { favorited } = await this.dataLoader
       .getFavoritesLoader(userId)
       .load(article.id);
@@ -121,6 +128,7 @@ export class ArticleResolver {
     @CurrentUser('id') userId: number,
   ) {
     if (article.favoritesCount !== undefined) return article.favoritesCount;
+    this.logger.log('Getting favorites count for article', article.id);
     const { count } = await this.dataLoader
       .getFavoritesLoader(userId)
       .load(article.id);

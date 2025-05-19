@@ -530,6 +530,7 @@
                   "  ",
                   "  pm.expect(responseData.data.updateArticle).to.be.an('object');",
                   "  pm.expect(responseData.data.updateArticle.slug).to.exist.and.to.be.a('string');",
+                  "  pm.globals.set('slug', responseData.data.updateArticle.slug);",
                   "  pm.expect(responseData.data.updateArticle.title).to.exist.and.to.be.a('string');",
                   "  pm.expect(responseData.data.updateArticle.description).to.exist.and.to.be.a('string');",
                   "  pm.expect(responseData.data.updateArticle.body).to.exist.and.to.be.a('string');",
@@ -599,12 +600,256 @@
           "response": []
         },
         {
+          "name": "Favorite Article",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the article object\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.favoriteArticle).to.be.an('object');",
+                  "  pm.expect(responseData.data.favoriteArticle.slug).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.title).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.description).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.body).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.tagList).to.exist.and.to.be.an('array');",
+                  "  pm.expect(responseData.data.favoriteArticle.createdAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.updatedAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.author).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.favoriteArticle.author.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.author.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.favoriteArticle.author.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.author.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.favoriteArticle.favorited).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.favoriteArticle.favorited).to.be.is.true;",
+                  "  pm.expect(responseData.data.favoriteArticle.favoritesCount).to.exist.and.to.be.a('number');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Check that 'slug,' 'title,' 'description,' 'body,' 'tagList,' 'createdAt,' 'updatedAt' are non-empty strings or arrays\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    pm.expect(responseData.data.favoriteArticle).to.be.an('object');",
+                  "    pm.expect(responseData.data.favoriteArticle.slug).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.body).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.tagList).to.be.an('array').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.createdAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.favoriteArticle.updatedAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Verify that 'author' object contains 'bio,' 'following,' 'image,' 'username' fields\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.favoriteArticle.author).to.be.an('object');",
+                  "    pm.expect(responseData.data.favoriteArticle.author).to.include.all.keys('bio', 'following', 'image', 'username');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation FavoriteArticle($slug: String!) {\n  favoriteArticle(slug: $slug) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    }\n    favorited\n    favoritesCount\n  }\n}",
+                "variables": "{\n  \"slug\": \"{{slug}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Unfavorite Article",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Validate the structure of the article object\", function () {",
+                  "  const responseData = pm.response.json();",
+                  "  ",
+                  "  pm.expect(responseData.data.unfavoriteArticle).to.be.an('object');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.slug).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.title).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.description).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.body).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.tagList).to.exist.and.to.be.an('array');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.createdAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.updatedAt).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.author).to.exist.and.to.be.an('object');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.author.bio).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.author.following).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.author.image).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.author.username).to.exist.and.to.be.a('string');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.favorited).to.exist.and.to.be.a('boolean');",
+                  "  pm.expect(responseData.data.unfavoriteArticle.favorited).to.be.is.false;",
+                  "  pm.expect(responseData.data.unfavoriteArticle.favoritesCount).to.exist.and.to.be.a('number');",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Check that 'slug,' 'title,' 'description,' 'body,' 'tagList,' 'createdAt,' 'updatedAt' are non-empty strings or arrays\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "",
+                  "    pm.expect(responseData.data.unfavoriteArticle).to.be.an('object');",
+                  "    pm.expect(responseData.data.unfavoriteArticle.slug).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.body).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.tagList).to.be.an('array').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.createdAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "    pm.expect(responseData.data.unfavoriteArticle.updatedAt).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Verify that 'author' object contains 'bio,' 'following,' 'image,' 'username' fields\", function () {",
+                  "    const responseData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(responseData.data.unfavoriteArticle.author).to.be.an('object');",
+                  "    pm.expect(responseData.data.unfavoriteArticle.author).to.include.all.keys('bio', 'following', 'image', 'username');",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "protocolVersion": "auto"
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UnfavoriteArticle($slug: String!) {\n  unfavoriteArticle(slug: $slug) {\n    slug\n    title\n    description\n    body\n    tagList\n    createdAt\n    updatedAt\n    author {\n      bio\n      following\n      image\n      username\n    }\n    favorited\n    favoritesCount\n  }\n}",
+                "variables": "{\n  \"slug\": \"{{slug}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{APIURL}}",
+              "host": ["{{APIURL}}"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Delete Article",
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [""],
+                "exec": [
+                  "pm.test(\"Response status code is 200\", function () {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "});",
+                  "",
+                  "",
+                  "pm.test(\"Response time is within an acceptable range\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "",
+                  "if (pm.response.json().data.deleteArticle) {",
+                  "    pm.test(\"Article deleted successfully\", function () {",
+                  "        pm.expect(pm.response.json().data.deleteArticle).to.be.true;",
+                  "    });",
+                  "} else {",
+                  "    pm.test(\"Presence of error properties in the response schema\", function () {",
+                  "        const responseData = pm.response.json();",
+                  "",
+                  "        pm.expect(responseData).to.be.an('object');",
+                  "        pm.expect(responseData.errors).to.be.an('array');",
+                  "        pm.expect(responseData.errors).to.not.be.empty;",
+                  "",
+                  "        responseData.errors.forEach(function (error) {",
+                  "            pm.expect(error).to.have.property('message');",
+                  "            pm.expect(error).to.have.property('locations');",
+                  "            pm.expect(error).to.have.property('path');",
+                  "            pm.expect(error).to.have.property('extensions');",
+                  "",
+                  "            pm.expect(error.locations).to.be.an('array');",
+                  "            pm.expect(error.locations).to.not.be.empty;",
+                  "",
+                  "            pm.expect(error.extensions).to.have.property('timestamp');",
+                  "            pm.expect(error.extensions).to.have.property('statusCode');",
+                  "            pm.expect(error.extensions).to.have.property('error');",
+                  "            pm.expect(error.extensions).to.have.property('code');",
+                  "            pm.expect(error.extensions).to.have.property('message');",
+                  "            pm.expect(error.extensions).to.have.property('stacktrace');",
+                  "            pm.expect(error.extensions.stacktrace).to.be.an('array');",
+                  "        });",
+                  "    });",
+                  "",
+                  "",
+                  "    pm.test(\"Errors array is present and contains expected number of elements\", function () {",
+                  "        const responseData = pm.response.json();",
+                  "",
+                  "        pm.expect(responseData).to.be.an('object');",
+                  "        pm.expect(responseData.errors).to.be.an('array');",
+                  "        pm.expect(responseData.errors).to.have.lengthOf.at.least(1, \"Errors array should contain at least one element\");",
+                  "    });",
+                  "",
+                  "",
+                  "    pm.test(\"Validate that the message in the errors array is a non-empty string\", function () {",
+                  "        const responseData = pm.response.json();",
+                  "",
+                  "        pm.expect(responseData.errors).to.be.an('array').that.is.not.empty;",
+                  "        responseData.errors.forEach(function (error) {",
+                  "            pm.expect(error.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+                  "        });",
+                  "    });",
+                  "}"
+                ],
                 "type": "text/javascript",
                 "packages": {}
               }

@@ -23,8 +23,9 @@ export class ArticleDataLoader {
     if (!this.authorLoader) {
       this.authorLoader = new DataLoader<number, UserEntity>(
         async (authorIds: readonly number[]) => {
-          const authors = await this.userRepository.findBy({
-            id: In([...authorIds]),
+          const authors = await this.userRepository.find({
+            where: { id: In([...authorIds]) },
+            relations: ['followers'],
           });
           return authorIds.map((id) =>
             authors.find((author) => author.id === id),

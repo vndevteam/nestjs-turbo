@@ -99,7 +99,7 @@ export class ArticleService {
     if (shouldEagerLoad) {
       article = await this.articleRepository.findOne({
         where: { id: savedArticle.id },
-        relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+        relations: ['author', 'author.followers', 'tags', 'favoritedBy'],
       });
     } else {
       article = await this.articleRepository.findOne({
@@ -116,8 +116,8 @@ export class ArticleService {
           username: article.author.username,
           bio: article.author.bio,
           image: article.author.image,
-          following: article.author.following.some(
-            (follow) => follow.followeeId === userId,
+          following: article.author.followers.some(
+            (follower) => follower.followerId === userId,
           ),
         },
         favorited: article.favoritedBy.some((user) => user.id === userId),
@@ -169,7 +169,7 @@ export class ArticleService {
     if (shouldEagerLoad) {
       newArticle = await this.articleRepository.findOne({
         where: { id: savedArticle.id },
-        relations: ['author', 'author.following', 'tags', 'favoritedBy'],
+        relations: ['author', 'author.followers', 'tags', 'favoritedBy'],
       });
     } else {
       newArticle = await this.articleRepository.findOne({
@@ -186,8 +186,8 @@ export class ArticleService {
           username: newArticle.author.username,
           bio: newArticle.author.bio,
           image: newArticle.author.image,
-          following: newArticle.author.following.some(
-            (follow) => follow.followeeId === userId,
+          following: newArticle.author.followers.some(
+            (follower) => follower.followerId === userId,
           ),
         },
         favorited: newArticle.favoritedBy.some((user) => user.id === userId),

@@ -57,6 +57,9 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   deleteArticle(slug: String!): Boolean!
 
+  """Favorite an article"""
+  favoriteArticle(slug: String!): Article!
+
   """Follow User"""
   followUser(
     """Username of the profile"""
@@ -65,6 +68,9 @@ type Mutation {
 
   """Sign in"""
   login(input: LoginInput!): User!
+
+  """Unfavorite an article"""
+  unfavoriteArticle(slug: String!): Article!
 
   """Unfollow User"""
   unfollowUser(
