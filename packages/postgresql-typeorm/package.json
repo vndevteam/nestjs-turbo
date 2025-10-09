@@ -46,18 +46,18 @@
     "@nestjs/mapped-types": "^2.1.0",
     "@repo/nest-common": "workspace:*",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "env-cmd": "^10.1.0",
-    "pg": "^8.15.6",
-    "typeorm": "^0.3.22"
+    "class-validator": "^0.14.2",
+    "env-cmd": "^11.0.0",
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
-    "ts-loader": "^9.5.2",
+    "@types/node": "^24.7.0",
+    "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "typeorm-extension": "^3.7.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   }
 }
