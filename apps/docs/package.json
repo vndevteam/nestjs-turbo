@@ -15,8 +15,8 @@
     "next": "15.3.2",
     "nextra": "^4.2.17",
     "nextra-theme-docs": "^4.2.17",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "tailwindcss": "^4.1.5"
   },
   "devDependencies": {
